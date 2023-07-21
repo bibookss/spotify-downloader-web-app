@@ -49,4 +49,102 @@ class SpotifyController extends Controller
 
         return redirect('/'); 
     }
+
+    public function user() 
+    {
+        $response = Http::withHeaders([
+            'Authorization' => 'Bearer ' . session('spotifyAccessToken'),
+        ])->get('https://api.spotify.com/v1/me');
+
+        $response = $response->json();
+
+        $user = [
+            'name' => $response['display_name'],
+            'email' => $response['email'],
+            'image' => $response['images'][0]['url'],
+        ];
+
+        dd($user);
+
+        return $user;
+    }
+
+    public function playlists() 
+    {
+        $response = Http::withHeaders([
+            'Authorization' => 'Bearer ' . session('spotifyAccessToken'),
+        ])->get('https://api.spotify.com/v1/me/playlists');
+    
+        $response = $response->json();
+
+        $playlists = [];
+        foreach ($response['items'] as $playlist) {
+            $playlists[] = [
+                'name' => $playlist['name'],
+                'image' => $playlist['images'][0]['url'],
+                'id' => $playlist['id'],
+                'description' => $playlist['description'],
+                'owner' => $playlist['owner']['display_name'],
+            ];
+        }
+
+        return $playlists;
+    }
+
+    public function featuredPlaylist()
+    {
+        $response = Http::withHeaders([
+            'Authorization' => 'Bearer ' . session('spotifyAccessToken'),
+        ])->get('https://api.spotify.com/v1/browse/featured-playlists');
+
+        $response = $response->json();
+
+        $playlists = [];
+        foreach ($response['playlists']['items'] as $playlist) {
+            $playlists[] = [
+                'name' => $playlist['name'],
+                'image' => $playlist['images'][0]['url'],
+                'id' => $playlist['id'],
+                'description' => $playlist['description'],
+                'owner' => $playlist['owner']['display_name'],
+            ];
+        }
+
+        return $playlists;
+    }
+
+    public function playlist(Request $request)
+    {
+        $response = Http::withHeaders([
+            'Authorization' => 'Bearer ' . session('spotifyAccessToken'),
+        ])->get('https://api.spotify.com/v1/playlists/' . $request->id);
+
+        $response = $response->json();
+
+        $playlist = [
+            'name' => $response['name'],
+            'image' => $response['images'][0]['url'],
+            'id' => $response['id'],
+            'description' => $response['description'],
+            'owner' => $response['owner']['display_name'],
+            'num_tracks' => $response['tracks']['total'],
+        ];
+
+        $tracks = [];
+        foreach ($response['tracks']['items'] as $track) {
+            $tracks[] = [
+                'name' => $track['track']['name'],
+                'image' => $track['track']['album']['images'][0]['url'],
+                'id' => $track['track']['id'],
+                'artist' => $track['track']['artists'][0]['name'],
+                'album' => $track['track']['album']['name'],
+                'duration' => $track['track']['duration_ms'],
+            ];
+        }
+
+        $playlist['tracks'] = $tracks;
+        $playlist['duration'] = array_sum(array_column($tracks, 'duration')); // in ms
+
+        return $playlist;
+    }
 }
