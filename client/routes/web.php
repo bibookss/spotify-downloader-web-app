@@ -18,10 +18,16 @@ use App\Http\Controllers\SpotifyController;
 
 
 Route::get('/', function () {
-    return view('auth');
+    return view('authentication.auth');
 });
 
+Route::get('/dashboard', function () {
+    return view('dashboard');
+})->name('dashboard');
+
+
 Route::get('/spotify/login', [SpotifyController::class, 'login'])->name('spotify.login');
+Route::post('/spotify/logout', [SpotifyController::class, 'logout'])->name('spotify.logout');
 Route::get('/spotify/callback', [SpotifyController::class, 'callback'])->name('spotify.callback');
 Route::get('/spotify/user', [SpotifyController::class, 'user'])->name('spotify.user');
 Route::get('/playlists', [SpotifyController::class, 'playlists'])->name('spotify.playlists');

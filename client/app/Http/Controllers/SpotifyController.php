@@ -12,7 +12,7 @@ class SpotifyController extends Controller
     public function login()
     {
         $client_id = env('SPOTIFY_CLIENT_ID');
-        $redirect_uri = env('APP_URL') .'/spotify/callback';
+        $redirect_uri = env('APP_URL') . '/spotify/callback';
         $state = Str::random(16);
         $scope = 'user-read-private user-read-email';
 
@@ -25,16 +25,24 @@ class SpotifyController extends Controller
         ];
 
         $spotify_auth_url = 'https://accounts.spotify.com/authorize?' . http_build_query($query_params);
-        
+
         return redirect()->away($spotify_auth_url);
+    }
+
+    public function logout(Request $request)
+    {
+        $request->session()->forget('spotifyAccessToken');
+        $request->session()->forget('spotifyUser');
+
+        return redirect('/');
     }
 
     public function callback(Request $request)
     {
         $client_id = env('SPOTIFY_CLIENT_ID');
         $client_secret = env('SPOTIFY_CLIENT_SECRET');
-        $code = $request->input('code'); 
-        $redirect_uri = env('APP_URL') .'/spotify/callback';
+        $code = $request->input('code');
+        $redirect_uri = env('APP_URL') . '/spotify/callback';
 
         $response = Http::asForm()->post('https://accounts.spotify.com/api/token', [
             'grant_type' => 'authorization_code',
@@ -47,10 +55,10 @@ class SpotifyController extends Controller
         $access_token = $response->json('access_token');
         $request->session()->put('spotifyAccessToken', $access_token);
 
-        return redirect('/'); 
+        return redirect('/dashboard');
     }
 
-    public function user() 
+    public function user()
     {
         $response = Http::withHeaders([
             'Authorization' => 'Bearer ' . session('spotifyAccessToken'),
@@ -69,12 +77,12 @@ class SpotifyController extends Controller
         return $user;
     }
 
-    public function playlists() 
+    public function playlists()
     {
         $response = Http::withHeaders([
             'Authorization' => 'Bearer ' . session('spotifyAccessToken'),
         ])->get('https://api.spotify.com/v1/me/playlists');
-    
+
         $response = $response->json();
 
         $playlists = [];

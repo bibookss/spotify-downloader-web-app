@@ -1,22 +1,9 @@
-<!DOCTYPE html>
-<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
+@extends ('layouts.app')
 
-<head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    @vite('resources/css/app.css')
-
-    <title>Spotify Downloader</title>
-
-    <!-- Fonts -->
-    <link rel="preconnect" href="https://fonts.bunny.net">
-    <link href="https://fonts.bunny.net/css?family=figtree:400,600&display=swap" rel="stylesheet" />
-    <script src="https://kit.fontawesome.com/d7126633c0.js" crossorigin="anonymous"></script>
-</head>
-
+@section('content')
 <body class="antialiased">
     <x-navbar />
-    <div class="relative flex justify-center items-center min-h-screen">
+    <div class="relative flex justify-center items-center min-h-screen bg-spotifyDark">
         {{-- @if (Route::has('login'))
                 <div class="sm:fixed sm:top-0 sm:right-0 p-6 text-right z-10">
                     @auth
@@ -47,33 +34,24 @@
             </svg>
         </div>
         <div class="text-center text-white z-10">
-            {{-- Header --}}
+            
             <img src="{{ asset('assets/logo/spot-logo.png') }}" style="width: 40%" class="m-auto " alt="logo">
 
-            {{-- Subheader --}}
+            
             <h1 class="text-3xl font-bold  mt-5">
                 Music Download <span class="text-spotify">Simplified</span>.
             </h1>
 
-            {{-- texts --}}
+           
             <p class=" font-light my-7">Gone are the days of manual downloads of your favorite songs. Get ready for a
                 seamless <br> download
                 experience with Spotify Downloader.</p>
 
-<<<<<<< HEAD
-            <a href="{{ route('spotify.redirect') }}" class="bg-spotify p-4 rounded-md text-black px-12 drop-shadow-xl">
-=======
             <a href="{{ route('spotify.login') }}" class="bg-spotify p-4 rounded-md text-black px-12">
->>>>>>> 3605a78f944431974df396e2c2154b16c9ef5ede
                 <i class="fa-brands fa-spotify"></i>
                 Login with Spotify
             </a>
         </div>
     </div>
 </body>
-<style>
-    body {
-        background: #181818;
-    }
-</style>
-</html>
+@endsection
