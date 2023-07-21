@@ -1,6 +1,8 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\SpotifyController;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -13,9 +15,11 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+
+
 Route::get('/', function () {
     return view('auth');
 });
 
-Route::get('/spotify/redirect', 'SpotifyController@redirect')->name('spotify.redirect');
-
+Route::get('/spotify/login', [SpotifyController::class, 'login'])->name('spotify.login');
+Route::get('/spotify/callback', [SpotifyController::class, 'callback'])->name('spotify.callback');
