@@ -23,3 +23,6 @@ Route::get('/', function () {
 
 Route::get('/spotify/login', [SpotifyController::class, 'login'])->name('spotify.login');
 Route::get('/spotify/callback', [SpotifyController::class, 'callback'])->name('spotify.callback');
+Route::get('/spotify/user', [SpotifyController::class, 'user'])->name('spotify.user');
+Route::get('/playlists', [SpotifyController::class, 'playlists'])->name('spotify.playlists');
+Route::get('/playlists/{id}', [SpotifyController::class, 'playlist'])->name('spotify.playlist');
