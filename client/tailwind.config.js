@@ -4,11 +4,12 @@ module.exports = {
     "./resources/**/*.blade.php",
   ],
   theme: {
-    container: {
-      center: 'true',
-      padding: '2rem',
-    }
+    extend: {
+      colors: {
+        'spotify': '#1ED760',
+        'spotifyDark': '#181818',
+      }
+    },
   },
   plugins: [],
 }
-

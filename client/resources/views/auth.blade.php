@@ -11,13 +11,12 @@
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.bunny.net">
     <link href="https://fonts.bunny.net/css?family=figtree:400,600&display=swap" rel="stylesheet" />
-
+    <script src="https://kit.fontawesome.com/d7126633c0.js" crossorigin="anonymous"></script>
 </head>
 
 <body class="antialiased">
     <x-navbar />
-    <div
-        class="relative sm:flex sm:justify-center sm:items-center min-h-screen bg-dots-darker bg-center bg-gray-100 dark:bg-dots-lighter dark:bg-gray-900 selection:bg-red-500 selection:text-white">
+    <div class="relative sm:flex sm:justify-center sm:items-center min-h-screen">
         {{-- @if (Route::has('login'))
                 <div class="sm:fixed sm:top-0 sm:right-0 p-6 text-right z-10">
                     @auth
@@ -31,11 +30,33 @@
                     @endauth
                 </div>
             @endif --}}
+        
+        
+        <div class="text-center text-white">
+            {{-- Header --}}
+            <img src="{{ asset('assets/logo/spot-logo.png') }}" style="width: 40%" class="m-auto" alt="logo">
 
-        <h1 class="text-3xl font-bold underline">
-            Hello world!
-        </h1>
+            {{-- Subheader --}}
+            <h1 class="text-3xl font-bold  mt-5">
+                Music Download <span class="text-spotify">Simplified</span>.
+            </h1>
+
+            {{-- texts --}}
+            <p class=" font-light my-7">Gone are the days of manual downloads of your favorite songs. Get ready for a
+                seamless <br> download
+                experience with Spotify Downloader.</p>
+
+            <a href="{{ route('spotify.redirect') }}" class="bg-spotify p-4 rounded-md text-black px-12">
+                <i class="fa-brands fa-spotify"></i>
+                Login with Spotify
+            </a>
+        </div>
     </div>
 </body>
+<style>
+    body {
+        background: #181818;
+    }
+</style>
 
 </html>
