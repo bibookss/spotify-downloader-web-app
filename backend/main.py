@@ -1,11 +1,11 @@
-from fastapi import FastAPI, HTTPException
+from fastapi import FastAPI, HTTPException, Request
 from fastapi.responses import FileResponse
 import yt_dlp
 import os
 from youtubesearchpython import VideosSearch
 
-def get_youtube_url(title):
-    search = VideosSearch(title, limit=1)
+def get_youtube_url(title, artist):
+    search = VideosSearch(f'{title}, by {artist}', limit=1)
     result = search.result()
     url = result['result'][0]['link']
     
@@ -14,13 +14,12 @@ def get_youtube_url(title):
 
 app = FastAPI()
 
-@app.get("/")
-async def root():
-    return {"message": "Hello World"}
+@app.get("/api/download")
+async def download(request: Request):
+    title = request.query_params.get('title')
+    artist = request.query_params.get('artist')
 
-@app.get("/api/download/{title}")
-async def download(title: str):
-    link = get_youtube_url(title)
+    link = get_youtube_url(title, artist)
 
     ydl_opts = {
         'format': 'm4a/bestaudio/best',
@@ -36,7 +35,8 @@ async def download(title: str):
 
     path = f'downloads/{title}.m4a'
     if not os.path.exists(path):
-        raise HTTPException(status_code=404, detail="Video not found")
+        raise HTTPException(status_code=404, detail="Song not found")
 
     return FileResponse(path, headers={"Content-Disposition": f"attachment; filename={title}.m4a"})
+
 
