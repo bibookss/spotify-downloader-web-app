@@ -46,7 +46,7 @@
                 seamless <br> download
                 experience with Spotify Downloader.</p>
 
-            <a href="{{ route('spotify.redirect') }}" class="bg-spotify p-4 rounded-md text-black px-12">
+            <a href="{{ route('spotify.login') }}" class="bg-spotify p-4 rounded-md text-black px-12">
                 <i class="fa-brands fa-spotify"></i>
                 Login with Spotify
             </a>
