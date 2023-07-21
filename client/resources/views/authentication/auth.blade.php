@@ -51,6 +51,7 @@
                 <i class="fa-brands fa-spotify"></i>
                 Login with Spotify
             </a>
+            
         </div>
     </div>
 </body>

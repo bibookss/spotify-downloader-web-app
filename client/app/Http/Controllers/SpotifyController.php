@@ -55,6 +55,10 @@ class SpotifyController extends Controller
         $access_token = $response->json('access_token');
         $request->session()->put('spotifyAccessToken', $access_token);
 
+        // Get the user data and store it in the session
+        $user = $this->user();
+        $request->session()->put('spotifyUser', $user);
+
         return redirect('/dashboard');
     }
 
@@ -69,10 +73,15 @@ class SpotifyController extends Controller
         $user = [
             'name' => $response['display_name'],
             'email' => $response['email'],
-            'image' => $response['images'][0]['url'],
         ];
 
-        dd($user);
+        // Check if the user has a profile picture
+        if (!empty($response['images'])) {
+            $user['image'] = $response['images'][0]['url'];
+        } else {
+            // Set a default image URL if the user doesn't have a profile picture
+            $user['image'] = 'default-image-url';
+        }
 
         return $user;
     }
