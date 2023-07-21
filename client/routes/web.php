@@ -14,5 +14,8 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    return view('auth');
 });
+
+Route::get('/spotify/redirect', 'SpotifyController@redirect')->name('spotify.redirect');
+
