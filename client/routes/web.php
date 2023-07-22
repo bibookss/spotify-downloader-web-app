@@ -36,4 +36,5 @@ Route::get('/playlists', [SpotifyController::class, 'playlists'])->name('spotify
 Route::get('/playlists/{id}', [SpotifyController::class, 'playlist'])->name('spotify.playlist');
 
 // Download
-Route::get('/download/song', [DownloadController::class, 'download'])->name('download.song');
+Route::post('/download/song', [DownloadController::class, 'download'])->name('download.song');
+Route::post('/download/playlist', [DownloadController::class, 'downloadPlaylist'])->name('download.playlist');
