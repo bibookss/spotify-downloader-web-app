@@ -11,6 +11,7 @@ module.exports = {
         'spotifyDark': '#181818',
         'spotifyDarker': '#131313',
         'spotifyCard': '#312828',
+        'spotifyCardDescription': '#989898',
       }
     },
   },
