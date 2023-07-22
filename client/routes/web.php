@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\SpotifyController;
+use App\Http\Controllers\DownloadController;
 
 
 /*
@@ -26,9 +27,13 @@ Route::get('/dashboard', function () {
 })->name('dashboard');
 
 
+// Spotify
 Route::get('/spotify/login', [SpotifyController::class, 'login'])->name('spotify.login');
 Route::post('/spotify/logout', [SpotifyController::class, 'logout'])->name('spotify.logout');
 Route::get('/spotify/callback', [SpotifyController::class, 'callback'])->name('spotify.callback');
 Route::get('/spotify/user', [SpotifyController::class, 'user'])->name('spotify.user');
 Route::get('/playlists', [SpotifyController::class, 'playlists'])->name('spotify.playlists');
 Route::get('/playlists/{id}', [SpotifyController::class, 'playlist'])->name('spotify.playlist');
+
+// Download
+Route::get('/download/song', [DownloadController::class, 'download'])->name('download.song');
