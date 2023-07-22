@@ -2,7 +2,6 @@
 
 @section('content')
 <body class="antialiased">
-    <x-navbar />
     <div class="relative flex justify-center items-center min-h-screen bg-spotifyDark">
         {{-- @if (Route::has('login'))
                 <div class="sm:fixed sm:top-0 sm:right-0 p-6 text-right z-10">

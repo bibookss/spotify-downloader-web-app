@@ -59,6 +59,10 @@ class SpotifyController extends Controller
         $user = $this->user();
         $request->session()->put('spotifyUser', $user);
 
+        // Get the user's playlist
+        $playlists = $this->playlists();
+        $request->session()->put('spotifyPlaylists', $playlists);
+
         return redirect('/dashboard');
     }
 
@@ -92,6 +96,10 @@ class SpotifyController extends Controller
             'Authorization' => 'Bearer ' . session('spotifyAccessToken'),
         ])->get('https://api.spotify.com/v1/me/playlists');
 
+        if ($response->failed()) {
+            dd('API request failed', $response->json());
+        }
+
         $response = $response->json();
 
         $playlists = [];
@@ -104,6 +112,8 @@ class SpotifyController extends Controller
                 'owner' => $playlist['owner']['display_name'],
             ];
         }
+
+
 
         return $playlists;
     }
