@@ -7,8 +7,23 @@
 
 body {
     font-family: 'Poppins', sans-serif;
+    
 }
 
 .margin-top {
     margin-top: 6.5%;
+}
+
+::-webkit-scrollbar {
+    height: 7px;
+    width: 10px;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #888;
+    border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: #555;
 }

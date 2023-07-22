@@ -63,6 +63,18 @@ class SpotifyController extends Controller
         $playlists = $this->playlists();
         $request->session()->put('spotifyPlaylists', $playlists);
 
+        // Get featured playlists
+        $featuredPlaylist = $this->featuredPlaylist();
+        $request->session()->put('spotifyFeaturedPlaylists', $featuredPlaylist);
+
+        // Get Artists for each playlists
+        foreach ($playlists as $key => $playlist) {
+            $artists = $this->getPlaylistArtists($playlist['id']);
+            $playlists[$key]['artists'] = $artists;
+        }
+
+        $request->session()->put('spotifyPlaylists', $playlists);
+
         return redirect('/dashboard');
     }
 
@@ -112,8 +124,6 @@ class SpotifyController extends Controller
                 'owner' => $playlist['owner']['display_name'],
             ];
         }
-
-
 
         return $playlists;
     }
@@ -170,8 +180,35 @@ class SpotifyController extends Controller
         }
 
         $playlist['tracks'] = $tracks;
-        $playlist['duration'] = array_sum(array_column($tracks, 'duration')); // in ms
+        $playlist['duration'] = array_sum(array_column($tracks, 'duration'));
 
         return $playlist;
     }
+
+    public function getPlaylistArtists($playlist_id)
+    {
+        $response = Http::withHeaders([
+            'Authorization' => 'Bearer ' . session('spotifyAccessToken'),
+        ])->get('https://api.spotify.com/v1/playlists/' . $playlist_id . '/tracks');
+
+        if ($response->failed()) {
+            return []; // Return an empty array if the API request fails
+        }
+
+        $response = $response->json();
+
+        $artists = [];
+        foreach ($response['items'] as $item) {
+            // Ensure 'track' and 'artists' keys are present before looping
+            if (isset($item['track'], $item['track']['artists'])) {
+                foreach ($item['track']['artists'] as $artist) {
+                    $artists[] = $artist['name'];
+                }
+            }
+        }
+
+        return $artists;
+    }
+
+    
 }

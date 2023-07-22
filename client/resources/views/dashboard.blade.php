@@ -4,25 +4,22 @@
 
     <body class=" antialiased">
         <div class="px-9 h-screen margin-top">
-            <h1 class=" text-2xl text-white font-bold">Welcome back, {{ session('spotifyUser')['name'] }}! </h1>
+            <h1 class=" text-3xl text-white font-bold">Welcome back, {{ session('spotifyUser')['name'] }}! </h1>
 
-            {{-- User's playlists --}}
-            <div class="grid grid-cols-3 gap-4 mt-10">
-                @if (session()->has('spotifyPlaylists'))
-                    @foreach (session('spotifyPlaylists') as $playlist)
-                        <div class="flex bg-spotifyCard rounded-sm">
-                            <!-- Playlist Image -->
-                            <img  src="{{ $playlist['image'] }}" alt="{{ $playlist['name'] }}" class="w-20 h-auto rounded-sm">
+            {{-- Render user's playlists --}}
+            <x-playlist />
 
-                            {{-- Playlist title --}}
-                            <a href="https://open.spotify.com/playlist/{{ $playlist['id'] }}"
-                                class="text-white font-bold">{{ $playlist['name'] }}</a>
-                        </div>
-                    @endforeach
-                @endif
-            </div>
+            <h1 class="text-2xl text-white font-bold my-10">Featured Playlists</h1>
+
+            {{-- Render user's featured playlists --}}
+            <x-featured-playlist />
+
+            <h1 class="text-2xl text-white font-bold my-10">Category Playlists</h1>
+
+            {{-- Render user's category playlist --}}
+
+        </div>
     </body>
-    </div>
 @endsection
 
 <style scoped>
