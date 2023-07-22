@@ -53,7 +53,10 @@ class SpotifyController extends Controller
         ]);
 
         $access_token = $response->json('access_token');
+        $refresh_token = $response->json('refresh_token');
+
         $request->session()->put('spotifyAccessToken', $access_token);
+        $request->session()->put('spotifyRefreshToken', $refresh_token);
 
         // Get the user data and store it in the session
         $user = $this->user();
@@ -64,6 +67,23 @@ class SpotifyController extends Controller
         $request->session()->put('spotifyPlaylists', $playlists);
 
         return redirect('/dashboard');
+    }
+
+    public function refreshToken()
+    {
+        $client_id = env('SPOTIFY_CLIENT_ID');
+        $client_secret = env('SPOTIFY_CLIENT_SECRET');
+        $refresh_token = session('spotifyRefreshToken');
+
+        $response = Http::asForm()->post('https://accounts.spotify.com/api/token', [
+            'grant_type' => 'refresh_token',
+            'refresh_token' => $refresh_token,
+            'client_id' => $client_id,
+            'client_secret' => $client_secret,
+        ]);
+
+        $access_token = $response->json('access_token');
+        session(['spotifyAccessToken' => $access_token]);
     }
 
     public function user()
