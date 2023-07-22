@@ -60,7 +60,7 @@ brew install ffmpeg
 Run the backend service
 ```
 cd backend
-unvicorn main:app
+uvicorn main:app
 ```
 
 #### Frontend
