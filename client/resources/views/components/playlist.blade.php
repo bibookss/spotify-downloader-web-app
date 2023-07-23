@@ -8,7 +8,7 @@
                     <img src="{{ $playlist['image'] }}" alt="{{ $playlist['name'] }}" class="w-20 h-auto rounded-sm">
 
                     {{-- Playlist title --}}
-                    <a href="https://open.spotify.com/playlist/{{ $playlist['id'] }}"
+                    <a href="{{ route('spotify.playlist', ['id' =>  $playlist['id']]) }}"
                         class="text-white font-bold indent-10">{{ $playlist['name'] }}</a>
                 </div>
             @endforeach
