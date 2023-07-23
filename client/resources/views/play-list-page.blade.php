@@ -19,8 +19,8 @@
     </div>
 
     <div class="container px-9">
-        <button class="bg-[#1ED760] w-12 h-12 rounded-full flex justify-center items-center color-black">
-            <x-feathericon-download />
+        <button class="bg-[#1ED760] w-12 h-12 rounded-full flex justify-center items-center">
+            <x-feathericon-download style="color: black"/>
         </button>
     </div>
 
@@ -29,10 +29,11 @@
             <thead class="border-b border-[#A2A2A2]">
                 <tr>
                     <th class="max-w-[10px] text-left pb-3">#</th>
-                    <th class="text-left pb-3">Title</th>
-                    <th class="text-left pb-3">Album</th>
-                    <th class="text-left pb-3">Date added</th>
-                    <th class="text-center pb-3"><x-wi-time-3 class="w-7 h-7"/></th>
+                    <th class="max-w-auto text-left pb-3">Title</th>
+                    <th class="max-w-auto text-left pb-3">Album</th>
+                    <th class="max-w-auto text-left pb-3">Date added</th>
+                    <th class="max-w-auto text-left pb-3">Duration</th>
+                    <th class="min-w-[20px] text-center pb-3"><x-feathericon-download class="h-7"/></th>
                 </tr>
             </thead>
             <tbody class="pt-3">
@@ -51,6 +52,7 @@
                         <td>{{ $track['album'] }}</td>
                         <td>{{ $track['added_at']}}</td>
                         <td>{{ $track['duration'] }}</td>
+                        <td><x-untitledui-download-circle class="w-5 h-5" style="color: #1ED760"/></td>
                     </tr>
                 @endforeach
             </tbody>
