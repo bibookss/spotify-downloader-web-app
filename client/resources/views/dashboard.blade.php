@@ -17,7 +17,7 @@
             <h1 class="text-2xl text-white font-bold my-10">Category Playlists</h1>
 
             {{-- Render user's category playlist --}}
-
+            <x-category-playlist />
         </div>
     </body>
 @endsection
