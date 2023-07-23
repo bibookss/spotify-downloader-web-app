@@ -200,7 +200,7 @@ class SpotifyController extends Controller
         }
 
         $playlist['tracks'] = $tracks;
-        $playlist['duration'] = array_sum(array_column($tracks, 'duration'));
+        $playlist['duration'] = $this->millisecondsToText(array_sum(array_column($tracks, 'duration')));
 
         return view('play-list-page', ['playListData' => $playlist]);
     }
@@ -266,5 +266,45 @@ class SpotifyController extends Controller
 
         // To render call in a loop then pass id to playlist
         return $categories;
+    }
+
+    // Helper function to convert the milliseconds duration to text
+    function millisecondsToText($milliseconds) {
+        $seconds = floor($milliseconds / 1000);
+        $minutes = floor($seconds / 60);
+        $hours = floor($minutes / 60);
+        $seconds %= 60;
+        $minutes %= 60;
+    
+        $formattedText = '';
+    
+        if ($hours > 0) {
+            $formattedText .= $hours . ' hour';
+            if ($hours > 1) {
+                $formattedText .= 's';
+            }
+        }
+    
+        if ($minutes > 0) {
+            if ($formattedText !== '') {
+                $formattedText .= ' ';
+            }
+            $formattedText .= $minutes . ' min';
+            if ($minutes > 1) {
+                $formattedText .= 's';
+            }
+        }
+    
+        if ($seconds > 0) {
+            if ($formattedText !== '') {
+                $formattedText .= ' ';
+            }
+            $formattedText .= $seconds . ' sec';
+            if ($seconds > 1) {
+                $formattedText .= 's';
+            }
+        }
+    
+        return $formattedText;
     }
 }
