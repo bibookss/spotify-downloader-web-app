@@ -168,7 +168,7 @@ class SpotifyController extends Controller
         }
 
         return $playlists;
-    }
+}
 
     public function playlist(Request $request)
     {
@@ -249,11 +249,11 @@ class SpotifyController extends Controller
             $category = Http::withHeaders([
                 'Authorization' => 'Bearer ' . session('spotifyAccessToken'),
             ])->get('https://api.spotify.com/v1/browse/categories/' . $category_id . '/playlists');
-            
+
             if ($category->failed()) {
                 continue;
             }
-            
+
             $category = $category->json();
             $categories[] = [
                 'name' => $category['playlists']['items'][0]['name'],

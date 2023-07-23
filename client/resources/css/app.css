@@ -7,7 +7,7 @@
 
 body {
     font-family: 'Poppins', sans-serif;
-    
+
 }
 
 .margin-top {
@@ -26,4 +26,14 @@ body {
 
 ::-webkit-scrollbar-thumb:hover {
     background: #555;
+}
+
+.card-animation {
+    transition: transform .3s;
+}
+
+.card-animation:hover {
+    transform: scale(1.1);
+    cursor: pointer;
+    z-index: 1;
 }
