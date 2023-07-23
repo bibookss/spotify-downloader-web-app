@@ -33,15 +33,15 @@
             </svg>
         </div>
         <div class="text-center text-white z-10">
-            
+
             <img src="{{ asset('assets/logo/spot-logo.png') }}" style="width: 40%" class="m-auto " alt="logo">
 
-            
+
             <h1 class="text-3xl font-bold  mt-5">
                 Music Download <span class="text-spotify">Simplified</span>.
             </h1>
 
-           
+
             <p class=" font-light my-7">Gone are the days of manual downloads of your favorite songs. Get ready for a
                 seamless <br> download
                 experience with Spotify Downloader.</p>
@@ -50,7 +50,6 @@
                 <i class="fa-brands fa-spotify"></i>
                 Login with Spotify
             </a>
-            
         </div>
     </div>
 </body>

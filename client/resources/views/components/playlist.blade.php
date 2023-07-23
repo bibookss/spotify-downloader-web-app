@@ -3,7 +3,7 @@
     <div class="grid grid-cols-3 gap-4 mt-10">
         @if (session()->has('spotifyPlaylists'))
             @foreach (session('spotifyPlaylists') as $playlist)
-                <div class="flex bg-spotifyCard rounded-sm items-center drop-shadow-xl">
+                <div class="flex bg-spotifyCard card-animation rounded-sm items-center drop-shadow-xl">
                     <!-- Playlist Image -->
                     <img src="{{ $playlist['image'] }}" alt="{{ $playlist['name'] }}" class="w-20 h-auto rounded-sm">
 

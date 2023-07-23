@@ -168,7 +168,7 @@ class SpotifyController extends Controller
         }
 
         return $playlists;
-    }
+}
 
     public function playlist(Request $request)
     {
@@ -229,6 +229,4 @@ class SpotifyController extends Controller
 
         return $artists;
     }
-
-    
 }
