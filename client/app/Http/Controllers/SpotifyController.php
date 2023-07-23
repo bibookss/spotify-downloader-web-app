@@ -2,10 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use DateTime;
+use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Cookie;
-use Illuminate\Support\Str;
 
 class SpotifyController extends Controller
 {
@@ -196,12 +197,17 @@ class SpotifyController extends Controller
                 'artist' => $track['track']['artists'][0]['name'],
                 'album' => $track['track']['album']['name'],
                 'duration' => $track['track']['duration_ms'],
-                'added_at' => $track['added_at']
+                'added_at' => (new DateTime($track['added_at']))->format('M d, Y')
             ];
         }
 
-        $playlist['tracks'] = $tracks;
         $playlist['duration'] = $this->millisecondsToText(array_sum(array_column($tracks, 'duration')));
+
+        foreach ($tracks as &$track) {
+            $track['duration'] = $this->millisecondsToMinSec($track['duration']);
+        }        
+
+        $playlist['tracks'] = $tracks;
 
         return view('play-list-page', ['playListData' => $playlist]);
     }
@@ -307,5 +313,14 @@ class SpotifyController extends Controller
         }
     
         return $formattedText;
+    }
+
+    //helper function to convert milliseconds to min:sec
+    function millisecondsToMinSec($milliseconds) {
+        $seconds = floor($milliseconds / 1000);
+        $minutes = floor($seconds / 60);
+        $seconds %= 60;
+    
+        return sprintf("%02d:%02d", $minutes, $seconds);
     }
 }

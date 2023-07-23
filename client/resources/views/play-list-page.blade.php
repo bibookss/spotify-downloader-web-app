@@ -24,22 +24,30 @@
         </button>
     </div>
 
-    <div class="container px-9">
-        <table class="table-auto border-2 w-full">
-            <thead>
-              <tr>
-                <th class="max-w-[10px]">#</th>
-                <th>Title</th>
-                <th>Album</th>
-                <th>Date added</th>
-                <th><x-wi-time-3 class="w-7 h-7"/></th>
-              </tr>
+    <div class="p-9">
+        <table class="table w-full">
+            <thead class="border-b border-[#A2A2A2]">
+                <tr>
+                    <th class="max-w-[10px] text-left pb-3">#</th>
+                    <th class="text-left pb-3">Title</th>
+                    <th class="text-left pb-3">Album</th>
+                    <th class="text-left pb-3">Date added</th>
+                    <th class="text-center pb-3"><x-wi-time-3 class="w-7 h-7"/></th>
+                </tr>
             </thead>
-            <tbody>
+            <tbody class="pt-3">
                 @foreach($playListData['tracks'] as $index => $track)
                     <tr>
                         <td>{{ ($index + 1) }}</td>
-                        <td>{{ $track['name'] }}</td>
+                        <td>
+                            <div class="container flex flex-row items-center py-1">
+                                <img class="w-10 h-10 mr-4 rounded" src={{ $track['image'] }} alt="track image">
+                                <div class="container flex flex-col">
+                                    <p class="font-medium">{{ $track['name'] }}</p>
+                                    <p class="text-sm font-regular text-[#A2A2A2]">{{ $track['artist'] }}</p>
+                                </div>
+                            </div>
+                        </td>
                         <td>{{ $track['album'] }}</td>
                         <td>{{ $track['added_at']}}</td>
                         <td>{{ $track['duration'] }}</td>
