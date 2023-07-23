@@ -12,7 +12,7 @@
                 <div class="ml-5">
                     <img src="{{ session('spotifyUser')['image'] }}" id="avatarButton" type="button"
                         data-dropdown-toggle="userDropdown" data-dropdown-placement="bottom-start"
-                        class="w-10 h-auto p-1 rounded-full ring-2 ring-gray-300 dark:ring-gray-500 cursor-pointer"
+                        class="w-10 h-10 p-1 rounded-full ring-2 ring-gray-300 dark:ring-gray-500 cursor-pointer"
                         alt="User Image">
 
                     <!-- Dropdown menu -->
