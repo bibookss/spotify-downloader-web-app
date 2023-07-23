@@ -229,4 +229,42 @@ class SpotifyController extends Controller
 
         return $artists;
     }
+
+    // Helper function to get category playlists
+    public function categories()
+    {
+        $response = Http::withHeaders([
+            'Authorization' => 'Bearer ' . session('spotifyAccessToken'),
+        ])->get('https://api.spotify.com/v1/browse/categories');
+
+        $response = $response->json();
+
+        $category_ids = [];
+        foreach ($response['categories']['items'] as $category) {
+            $category_ids[] = $category['id'];
+        }
+
+        $categories = [];
+        foreach ($category_ids as $category_id) {
+            $category = Http::withHeaders([
+                'Authorization' => 'Bearer ' . session('spotifyAccessToken'),
+            ])->get('https://api.spotify.com/v1/browse/categories/' . $category_id . '/playlists');
+
+            if ($category->failed()) {
+                continue;
+            }
+
+            $category = $category->json();
+            $categories[] = [
+                'name' => $category['playlists']['items'][0]['name'],
+                'image' => $category['playlists']['items'][0]['images'][0]['url'],
+                'id' => $category['playlists']['items'][0]['id'],
+                'description' => $category['playlists']['items'][0]['description'],
+                'owner' => $category['playlists']['items'][0]['owner']['display_name'],
+            ];
+        }
+
+        // To render call in a loop then pass id to playlist
+        return $categories;
+    }
 }
