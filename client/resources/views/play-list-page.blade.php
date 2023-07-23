@@ -17,6 +17,12 @@
             </div>
         </div>
     </div>
+
+    <div class="container px-9">
+        <button class="bg-[#1ED760] w-12 h-12 rounded-full flex justify-center items-center color-black">
+            <x-feathericon-download />
+        </button>
+    </div>
 </body>
 @endsection
 
