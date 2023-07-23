@@ -2,10 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use DateTime;
+use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Cookie;
-use Illuminate\Support\Str;
 
 class SpotifyController extends Controller
 {
@@ -196,13 +197,19 @@ class SpotifyController extends Controller
                 'artist' => $track['track']['artists'][0]['name'],
                 'album' => $track['track']['album']['name'],
                 'duration' => $track['track']['duration_ms'],
+                'added_at' => (new DateTime($track['added_at']))->format('M d, Y')
             ];
         }
 
-        $playlist['tracks'] = $tracks;
-        $playlist['duration'] = array_sum(array_column($tracks, 'duration'));
+        $playlist['duration'] = $this->millisecondsToText(array_sum(array_column($tracks, 'duration')));
 
-        return $playlist;
+        foreach ($tracks as &$track) {
+            $track['duration'] = $this->millisecondsToMinSec($track['duration']);
+        }        
+
+        $playlist['tracks'] = $tracks;
+
+        return view('play-list-page', ['playListData' => $playlist]);
     }
 
     public function getPlaylistArtists($playlist_id)
@@ -266,5 +273,54 @@ class SpotifyController extends Controller
 
         // To render call in a loop then pass id to playlist
         return $categories;
+    }
+
+    // Helper function to convert the milliseconds duration to text
+    function millisecondsToText($milliseconds) {
+        $seconds = floor($milliseconds / 1000);
+        $minutes = floor($seconds / 60);
+        $hours = floor($minutes / 60);
+        $seconds %= 60;
+        $minutes %= 60;
+    
+        $formattedText = '';
+    
+        if ($hours > 0) {
+            $formattedText .= $hours . ' hour';
+            if ($hours > 1) {
+                $formattedText .= 's';
+            }
+        }
+    
+        if ($minutes > 0) {
+            if ($formattedText !== '') {
+                $formattedText .= ' ';
+            }
+            $formattedText .= $minutes . ' min';
+            if ($minutes > 1) {
+                $formattedText .= 's';
+            }
+        }
+    
+        if ($seconds > 0) {
+            if ($formattedText !== '') {
+                $formattedText .= ' ';
+            }
+            $formattedText .= $seconds . ' sec';
+            if ($seconds > 1) {
+                $formattedText .= 's';
+            }
+        }
+    
+        return $formattedText;
+    }
+
+    //helper function to convert milliseconds to min:sec
+    function millisecondsToMinSec($milliseconds) {
+        $seconds = floor($milliseconds / 1000);
+        $minutes = floor($seconds / 60);
+        $seconds %= 60;
+    
+        return sprintf("%02d:%02d", $minutes, $seconds);
     }
 }
