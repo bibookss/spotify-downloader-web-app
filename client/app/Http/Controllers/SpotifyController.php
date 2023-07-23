@@ -202,7 +202,7 @@ class SpotifyController extends Controller
         $playlist['tracks'] = $tracks;
         $playlist['duration'] = array_sum(array_column($tracks, 'duration'));
 
-        return $playlist;
+        return view('play-list-page', ['playListData' => $playlist]);
     }
 
     public function getPlaylistArtists($playlist_id)
