@@ -196,6 +196,7 @@ class SpotifyController extends Controller
                 'artist' => $track['track']['artists'][0]['name'],
                 'album' => $track['track']['album']['name'],
                 'duration' => $track['track']['duration_ms'],
+                'added_at' => $track['added_at']
             ];
         }
 

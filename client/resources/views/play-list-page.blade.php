@@ -23,11 +23,37 @@
             <x-feathericon-download />
         </button>
     </div>
+
+    <div class="container px-9">
+        <table class="table-auto border-2 w-full">
+            <thead>
+              <tr>
+                <th class="max-w-[10px]">#</th>
+                <th>Title</th>
+                <th>Album</th>
+                <th>Date added</th>
+                <th><x-wi-time-3 class="w-7 h-7"/></th>
+              </tr>
+            </thead>
+            <tbody>
+                @foreach($playListData['tracks'] as $index => $track)
+                    <tr>
+                        <td>{{ ($index + 1) }}</td>
+                        <td>{{ $track['name'] }}</td>
+                        <td>{{ $track['album'] }}</td>
+                        <td>{{ $track['added_at']}}</td>
+                        <td>{{ $track['duration'] }}</td>
+                    </tr>
+                @endforeach
+            </tbody>
+        </table>
+    </div>
 </body>
 @endsection
 
 <style scoped>
     body {
+        color: white;
         background: linear-gradient(180deg, #3A0609 0%, #121212 35.94%);
     }
 </style>
