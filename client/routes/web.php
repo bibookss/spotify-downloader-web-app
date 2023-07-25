@@ -24,7 +24,7 @@ Route::get('/', function () {
 
 Route::get('/dashboard', function () {
     return view('dashboard');
-})->middleware('isLoggedIn')->name('dashboard');
+})->middleware(['isLoggedIn', 'token.refresh'])->name('dashboard');
 
 
 // Spotify
