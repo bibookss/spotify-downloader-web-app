@@ -24,6 +24,7 @@
 
 <style scoped>
     body {
+        padding-top: 8rem;
         background: linear-gradient(180deg, #3A0609 0%, #121212 35.94%);
     }
 </style>
