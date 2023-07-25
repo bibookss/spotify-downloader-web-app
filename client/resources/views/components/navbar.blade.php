@@ -1,4 +1,4 @@
-<div class=" bg-transparent p-9 top-0 fixed w-screen z-20 flex justify-between items-center">
+<div class=" bg-transparent pt-9 sm:px-9 px-4 top-0 fixed w-screen z-20 flex justify-between items-center">
     <img src="{{ asset('assets/logo/spot-logo.png') }}" class="sm:block hidden h-8 w-auto" alt="Logo">
     <img src="{{ asset('assets/logo/logo.png') }}" class="sm:hidden block h-8 w-auto" alt="Logo">
 
