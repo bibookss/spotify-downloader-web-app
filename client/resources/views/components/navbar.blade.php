@@ -1,11 +1,15 @@
-<div class=" bg-transparent p-9 top-0 fixed w-screen z-20 flex justify-between">
-    <img src="{{ asset('assets/logo/spot-logo.png') }}" class="h-8 w-auto" alt="Logo">
+<div class=" bg-transparent p-9 top-0 fixed w-screen z-20 flex justify-between items-center">
+    <img src="{{ asset('assets/logo/spot-logo.png') }}" class="sm:block hidden h-8 w-auto" alt="Logo">
+    <img src="{{ asset('assets/logo/logo.png') }}" class="sm:hidden block h-8 w-auto" alt="Logo">
 
-    <div class="flex">
+
+    <div class="flex items-center">
         @if (session()->has('spotifyAccessToken'))
             <button type="button"
-                class="text-black bg-spotify  font-medium rounded-full text-sm px-8 py-2.5 text-center mr-2 mb-2 my-auto">
-                Download Playlist</button>
+                class="text-black bg-spotify font-medium rounded-full text-sm px-8 py-2.5 text-center">
+                <p class="sm:block hidden">Download Playlist</p> 
+                <div class="sm:hidden flex items-center"><x-untitledui-download-circle class="inline h-4 mr-2"/>Playlist</div>
+            </button>
 
             {{-- User's profile picture --}}
             @if (session()->has('spotifyUser') && session('spotifyUser')['image'])

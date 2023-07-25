@@ -19,7 +19,7 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 </head>
 
-<body class="antialiased">
+<body class="pt-32 antialiased">
     <x-navbar />
 
     @yield('content')

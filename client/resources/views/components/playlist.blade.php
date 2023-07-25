@@ -1,6 +1,6 @@
 <div>
     {{-- User's playlists --}}
-    <div class="grid grid-cols-3 gap-4 mt-10">
+    <div class="grid lg:grid-cols-3 grid-cols-2 gap-4 mt-10">
         @if (session()->has('spotifyPlaylists'))
             @foreach (session('spotifyPlaylists') as $playlist)
                 <div class="flex bg-spotifyCard card-animation rounded-sm items-center drop-shadow-xl">

@@ -2,8 +2,8 @@
 
 @section('content')
 
-    <body class=" antialiased">
-        <div class="px-9 h-screen margin-top">
+    <body class="antialiased">
+        <div class="px-9 xl:pt-0 lg:pt-5 md:pt-8 sm:pt-10">
             <h1 class=" text-3xl text-white font-bold">Welcome back, {{ session('spotifyUser')['name'] }}! </h1>
 
             {{-- Render user's playlists --}}
