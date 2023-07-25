@@ -20,11 +20,11 @@ use App\Http\Controllers\DownloadController;
 
 Route::get('/', function () {
     return view('authentication.auth');
-});
+})->middleware('alreadyLoggedIn');
 
 Route::get('/dashboard', function () {
     return view('dashboard');
-})->name('dashboard');
+})->middleware('isLoggedIn')->name('dashboard');
 
 
 // Spotify
