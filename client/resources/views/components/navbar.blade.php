@@ -11,7 +11,7 @@
 
             {{-- User's profile picture --}}
             @if (session()->has('spotifyUser') && session('spotifyUser')['image'])
-                <div class="ml-5 content-center items-center">
+                <div class="ml-5 mr-3 content-center items-center">
                     <img src="{{ session('spotifyUser')['image'] }}" id="avatarButton" type="button"
                         data-dropdown-toggle="userDropdown" data-dropdown-placement="bottom-start"
                         class="w-10 h-10 p-1 rounded-full ring-2 ring-gray-300 dark:ring-gray-500 cursor-pointer"

@@ -38,7 +38,7 @@
             </thead>
             <tbody class="pt-3">
                 @foreach($playListData['tracks'] as $index => $track)
-                    <tr class="card-animation">
+                    <tr>
                         <td>{{ ($index + 1) }}</td>
                         <td>
                             <div class="container flex flex-row items-center py-1">
