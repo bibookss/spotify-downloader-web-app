@@ -38,25 +38,25 @@
             </thead>
             <tbody class="pt-3">
                 @foreach($playListData['tracks'] as $index => $track)
-                    <tr>
+                    <tr class="card-animation">
                         <td>{{ ($index + 1) }}</td>
                         <td>
                             <div class="container flex flex-row items-center py-1">
                                 <img class="w-10 h-10 mr-4 rounded" src={{ $track['image'] }} alt="track image">
                                 <div class="container flex flex-col">
                                     <p class="font-medium">{{ $track['name'] }}</p>
-                                    <p class="text-sm font-regular text-[#A2A2A2]">{{ $track['artist'] }}</p>
+                                    <p class="text-sm font-regular text-spotifyCardDescription">{{ $track['artist'] }}</p>
                                 </div>
                             </div>
                         </td>
-                        <td>{{ $track['album'] }}</td>
-                        <td>{{ $track['added_at']}}</td>
-                        <td>{{ $track['duration'] }}</td>
+                        <td class="text-spotifyCardDescription">{{ $track['album'] }}</td>
+                        <td class="text-spotifyCardDescription">{{ $track['added_at']}}</td>
+                        <td class="text-spotifyCardDescription">{{ $track['duration'] }}</td>
                         <td>
                             <form action="{{ route('download.song') }}" method="POST">
                                 @csrf
                                 <input type="hidden" name="title" value="{{ $track['name'] }}">
-                                <input type="hidden" name="artist" value="{{ $track['artist'] }}"> 
+                                <input type="hidden" name="artist" value="{{ $track['artist'] }}">
                                 <button type="submit">
                                     <x-untitledui-download-circle class="w-5 h-5" style="color: #1ED760"/>
                             </form>
