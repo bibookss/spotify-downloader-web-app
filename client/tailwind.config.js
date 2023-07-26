@@ -12,7 +12,6 @@ module.exports = {
         'spotifyDarker': '#131313',
         'spotifyCard': '#312828',
         'spotifyCardDescription': '#A2A2A2',
-        'spotifyHover': '#2C2B2F',
       }
     },
   },
