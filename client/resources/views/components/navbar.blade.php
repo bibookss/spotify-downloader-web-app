@@ -1,15 +1,17 @@
-<div class=" bg-transparent p-9 top-0 fixed w-screen z-20 flex justify-between">
-    <img src="{{ asset('assets/logo/spot-logo.png') }}" class="h-8 w-auto" alt="Logo">
+<div class="spotify-navbar bg-transparent p-9 top-0 fixed w-screen z-20 flex justify-between">
+    <a href="{{ url('/dashboard') }}">
+        <img src="{{ asset('assets/logo/spot-logo.png') }}" class="h-8 w-auto" alt="Logo">
+    </a>
 
     <div class="flex">
         @if (session()->has('spotifyAccessToken'))
-            <button type="button"
-                class="text-black bg-spotify  font-medium rounded-full text-sm px-8 py-2.5 text-center mr-2 mb-2 my-auto">
-                Download Playlist</button>
+            <a type="button"
+                class="text-black bg-spotify  font-medium rounded-full text-sm px-8 py-2.5 text-center mr-2 my-auto">
+                Download Playlist</a>
 
             {{-- User's profile picture --}}
             @if (session()->has('spotifyUser') && session('spotifyUser')['image'])
-                <div class="ml-5">
+                <div class="ml-5 mr-3 content-center items-center">
                     <img src="{{ session('spotifyUser')['image'] }}" id="avatarButton" type="button"
                         data-dropdown-toggle="userDropdown" data-dropdown-placement="bottom-start"
                         class="w-10 h-10 p-1 rounded-full ring-2 ring-gray-300 dark:ring-gray-500 cursor-pointer"
@@ -51,3 +53,32 @@
         @endif
     </div>
 </div>
+
+<script>
+    $(window).scroll(function() {
+        var scroll = $(window).scrollTop();
+        var isAuthPage = $('body').hasClass('');
+
+        if (scroll > 100) {
+            $('.spotify-navbar').addClass('spotify-navbar-scrolled');
+        } else {
+            $('.spotify-navbar').removeClass('spotify-navbar-scrolled');
+        }
+    });
+</script>
+
+<style scoped>
+    .spotify-navbar {
+        background-color: transparent;
+    }
+
+    .spotify-navbar-scrolled {
+        transition: background-color 0.5s ease-in-out;
+        background-color: #181818;
+        padding: 15px;
+        padding-left: 37px;
+        padding-right: 35px;
+        align-content: center;
+        align-items: center;
+    }
+</style>
