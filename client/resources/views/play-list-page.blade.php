@@ -19,9 +19,13 @@
     </div>
 
     <div class="container px-9">
-        <button class="bg-[#1ED760] w-12 h-12 rounded-full flex justify-center items-center">
-            <x-feathericon-download style="color: black"/>
-        </button>
+        <form action="{{ route('download.playlist') }}" method="POST">
+            @csrf
+            <input type="hidden" name="id" value="{{ $playListData['id'] }}">
+            <button class="bg-[#1ED760] w-12 h-12 rounded-full flex justify-center items-center">
+                <x-feathericon-download style="color: black"/>
+            </button>
+        </form>
     </div>
 
     <div class="p-9">
@@ -59,6 +63,7 @@
                                 <input type="hidden" name="artist" value="{{ $track['artist'] }}"> 
                                 <button type="submit">
                                     <x-untitledui-download-circle class="w-5 h-5" style="color: #1ED760"/>
+                                </button>
                             </form>
                         </td>
                     </tr>
