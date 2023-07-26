@@ -15,9 +15,8 @@
             <x-featured-playlist />
 
             <h1 class="sm:text-3xl text-xl text-white font-bold mt-10">Category Playlists</h1>
-
             {{-- Render user's category playlist --}}
-
+            <x-category-playlist />
         </div>
     </body>
 @endsection

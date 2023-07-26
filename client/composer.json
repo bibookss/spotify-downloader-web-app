@@ -15,6 +15,7 @@
         "laravel/framework": "^10.10",
         "laravel/sanctum": "^3.2",
         "laravel/tinker": "^2.8",
+        "league/oauth2-client": "^2.7",
         "mallardduck/blade-boxicons": "^2.4",
         "mckenziearts/blade-untitledui-icons": "^1.2"
     },

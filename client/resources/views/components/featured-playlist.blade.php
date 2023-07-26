@@ -13,14 +13,14 @@
                 <p class="text-spotifyCardDescription block overflow-hidden whitespace-nowrap text-overflow-ellipsis sm:text-base text-xs">
                      {{ $playlist['description'] }} 
                 </p>
-
-                <!-- Display artists -->
-                @if (isset($playlist['artists']))
-                    @foreach ($playlist['artists'] as $artist)
-                        <p>{{ $artist }}</p>
-                    @endforeach
-                @endif
-            </div>
+                    <!-- Display artists -->
+                    @if (isset($playlist['artists']))
+                        @foreach ($playlist['artists'] as $artist)
+                            <p>{{ $artist }}</p>
+                        @endforeach
+                    @endif
+                </div>
+            </a>
         @endforeach
     @endif
 </div>

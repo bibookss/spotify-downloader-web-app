@@ -16,7 +16,6 @@
                 <p class="text-white text-sm font-normal">{{ $playListData['duration'] }}</p>
             </div>
         </div>
-    </div>
 
     <div class="container sm:px-9 px-4 pb-8">
         <button class="bg-[#1ED760] w-12 h-12 rounded-full flex justify-center items-center">
@@ -54,11 +53,41 @@
                         <td class="lg:table-cell hidden">{{ $track['duration'] }}</td>
                         <td><x-untitledui-download-circle class="w-5 h-5" style="color: #1ED760"/></td>
                     </tr>
-                @endforeach
-            </tbody>
-        </table>
-    </div>
-</body>
+                </thead>
+                <tbody>
+                    @foreach ($playListData['tracks'] as $index => $track)
+                        <tr class="hover:bg-spotifyHover">
+                            <td class="p-3 ps-5">{{ $index + 1 }}</td>
+                            <td>
+                                <div class="container flex flex-row items-center py-1 p-3">
+                                    <img class="w-10 h-10 mr-4 rounded card-animation" src={{ $track['image'] }}
+                                        alt="track image">
+                                    <div class="container flex flex-col">
+                                        <p class="font-medium">{{ $track['name'] }}</p>
+                                        <p class="text-sm font-regular text-spotifyCardDescription">
+                                            {{ $track['artist'] }}
+                                        </p>
+                                    </div>
+                                </div>
+                            </td>
+                            <td class="text-spotifyCardDescription p-3">{{ $track['album'] }}</td>
+                            <td class="text-spotifyCardDescription p-3">{{ $track['added_at'] }}</td>
+                            <td class="text-spotifyCardDescription p-3">{{ $track['duration'] }}</td>
+                            <td class="flex items-center justify-center">
+                                <form action="{{ route('download.song') }}" method="POST">
+                                    @csrf
+                                    <input type="hidden" name="title" value="{{ $track['name'] }}">
+                                    <input type="hidden" name="artist" value="{{ $track['artist'] }}">
+                                    <button type="submit" class="p-3 ">
+                                        <x-untitledui-download-circle class="w-5 h-5 " style="color: #1ED760" />
+                                </form>
+                            </td>
+                        </tr>
+                    @endforeach
+                </tbody>
+            </table>
+        </div>
+    </body>
 @endsection
 
 <style scoped>
