@@ -9,15 +9,15 @@
             {{-- Render user's playlists --}}
             <x-playlist />
 
-            <h1 class="text-2xl text-white font-bold my-10">Featured Playlists</h1>
+            <h1 class="text-2xl text-white font-bold mt-10">Featured Playlists</h1>
 
             {{-- Render user's featured playlists --}}
             <x-featured-playlist />
 
-            <h1 class="text-2xl text-white font-bold my-10">Category Playlists</h1>
+            <h1 class="text-2xl text-white font-bold mt-10">Category Playlists</h1>
 
             {{-- Render user's category playlist --}}
-
+            <x-category-playlist />
         </div>
     </body>
 @endsection
