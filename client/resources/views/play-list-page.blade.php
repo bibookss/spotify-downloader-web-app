@@ -3,21 +3,24 @@
 @section('content')
 
     <body>
-        <div class="container sm:px-9 px-4 py-9 flex sm:flex-row flex-col gap-x-8">
-            <img class="md:w-[250px] md:h-[250px] w-[200px] h-[200px] sm:m-0 m-auto" src={{ $playListData['image'] }}
-                alt="playlist-image">
-            <div class="container flex flex-col justify-end">
-                <p class="text-white text-sm font-medium pb-3">Playlist</p>
-                <h1 class="text-white font-bold text-7xl pb-10">{{ $playListData['name'] }}</h1>
-                <div class="container flex flex-row items-center gap-x-2">
-                    <img class="rounded-full w-8 h-8 " src="{{ session('spotifyUser')['image'] }}" alt="owner-image">
-                    <p class="text-white font-semibold text-sm ">{{ $playListData['owner'] }} •</p>
-                    <p class="text-white text-sm font-normal">
-                        {{ $playListData['num_tracks'] }} song{{ $playListData['num_tracks'] > 1 ? 's' : '' }},
-                    </p>
-                    <p class="text-white text-sm font-normal">{{ $playListData['duration'] }}</p>
-                </div>
-            </div>
+        <div class="container sm:px-9 px-4 py-9 flex sm:flex-row flex-col gap-x-8">	
+            <img class="md:w-[250px] md:h-[250px] w-[200px] h-[200px] sm:m-0 m-auto" src={{$playListData['image']}} alt="playlist-image">	
+            <div class="container flex flex-col justify-end">	
+                <p class="text-white sm:text-sm text-xs font-medium sm:pb-3 sm:pt-0 pt-6">Playlist</p>	
+                <h1 class="text-white font-bold md:text-7xl sm:text-5xl text-xl sm:pb-10 pb-2">{{ $playListData['name'] }}</h1>	
+                <div class="container flex md:flex-row md:items-center md:justify-normal flex-col justify-center gap-x-2 gap-y-2 sm:pt-0 pt-5">	
+                    <div class="flex flex-row items-center">	
+                        <img class="rounded-full w-8 h-8 mr-2" src="{{ session('spotifyUser')['image'] }}" alt="owner-image">	
+                        <p class="text-white font-semibold text-sm ">{{ $playListData['owner'] }}  <p class="md:block hidden">•</p></p>	
+                    </div>	
+                    <div class="flex flex-row gap-x-2">	
+                        <p class="text-white sm:text-sm text-xs font-normal">	
+                            {{ $playListData['num_tracks'] }} song{{ $playListData['num_tracks'] > 1 ? 's' : '' }},	
+                        </p>	
+                        <p class="text-white sm:text-sm text-xs font-normal">{{ $playListData['duration'] }}</p>	
+                    </div>	
+                </div>	
+            </div>	
         </div>
 
         <div class="container sm:px-9 px-4 pb-8">
