@@ -26,19 +26,19 @@
 
     <div class="p-9">
         <table class="table w-full">
-            <thead class="border-b border-[#A2A2A2]">
+            <thead class="border-b border-[#A2A2A2] relative h-full">
                 <tr>
-                    <th class="max-w-[10px] text-left pb-3">#</th>
-                    <th class="max-w-auto text-left pb-3">Title</th>
-                    <th class="max-w-auto text-left pb-3">Album</th>
-                    <th class="max-w-auto text-left pb-3">Date added</th>
-                    <th class="max-w-auto text-left pb-3">Duration</th>
-                    <th class="min-w-[20px] text-center pb-3"><x-feathericon-download class="h-7"/></th>
+                    <th class="max-w-[10px] font-normal text-left pb-3">#</th>
+                    <th class="max-w-auto font-normal text-left pb-3">Title</th>
+                    <th class="max-w-auto font-normal text-left pb-3">Album</th>
+                    <th class="max-w-auto font-normal text-left pb-3">Date added</th>
+                    <th class="max-w-auto font-normal text-left pb-3">Duration</th>
+                    <th class="min-w-[20px] font-normal text-r pb-3"><x-feathericon-download class="h-7"/></th>
                 </tr>
             </thead>
             <tbody class="pt-3">
                 @foreach($playListData['tracks'] as $index => $track)
-                    <tr>
+                    <tr class=" hover:bg-spotifyHover hover:bg-opacity-20">
                         <td>{{ ($index + 1) }}</td>
                         <td>
                             <div class="container flex flex-row items-center py-1">
@@ -52,13 +52,14 @@
                         <td class="text-spotifyCardDescription">{{ $track['album'] }}</td>
                         <td class="text-spotifyCardDescription">{{ $track['added_at']}}</td>
                         <td class="text-spotifyCardDescription">{{ $track['duration'] }}</td>
-                        <td>
-                            <form action="{{ route('download.song') }}" method="POST">
+                        <td class="">
+                            <form action="{{ route('download.song') }}" method="POST" class=" m-0">
                                 @csrf
                                 <input type="hidden" name="title" value="{{ $track['name'] }}">
                                 <input type="hidden" name="artist" value="{{ $track['artist'] }}">
                                 <button type="submit">
                                     <x-untitledui-download-circle class="w-5 h-5" style="color: #1ED760"/>
+                                </button>
                             </form>
                         </td>
                     </tr>
