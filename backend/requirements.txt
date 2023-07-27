@@ -2,3 +2,5 @@ fastapi
 uvicorn
 yt-dlp
 youtube-search-python
+aiohttp
+asyncio
