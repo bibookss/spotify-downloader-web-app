@@ -1,5 +1,5 @@
 
-<nav class="bg-transparent top-0 fixed w-screen z-20 spotify-navbar">
+<nav class="spotify-navbar top-0 fixed w-screen z-20 spotify-navbar" id="navbar">
     <div class=" flex flex-wrap items-center justify-between mx-auto py-5 sm:px-9 px-4">
     <a href="{{route('dashboard')}}" class="flex items-center">
         <img src="{{ asset('assets/logo/spot-logo.png') }}" class="sm:block hidden h-8 w-auto" alt="Logo">
@@ -76,33 +76,27 @@
     </div>
 </nav>
   
-
 <script>
-    $(window).scroll(function() {
-        var scroll = $(window).scrollTop();
+  $(window).scroll(function() {
+      var scroll = $(window).scrollTop();
+      var isAuthPage = $('body').hasClass('');
 
-        if (scroll > 0) {
-            $('.spotify-navbar').addClass('bg-black');
-            $('.spotify-navbar').removeClass('bg-transparent');
-        } else {
-            $('.spotify-navbar').removeClass('bg-black');
-            $('.spotify-navbar').addClass('bg-transparent');
-        }
-    });
+      if (scroll > 0) {
+          $('.spotify-navbar').addClass('spotify-navbar-scrolled');
+      } else {
+          $('.spotify-navbar').removeClass('spotify-navbar-scrolled');
+      }
+  });
 </script>
 
 <style scoped>
-    .spotify-navbar {
-        background-color: transparent;
-    }
+  .spotify-navbar {
+      background-color: transparent;
+  }
 
-    .spotify-navbar-scrolled {
-        transition: background-color 0.5s ease-in-out;
-        background-color: #181818;
-        padding: 15px;
-        padding-left: 37px;
-        padding-right: 35px;
-        align-content: center;
-        align-items: center;
-    }
+  .spotify-navbar-scrolled {
+      transition: background-color 0.3s ease-in-out;
+      backdrop-filter: blur(8px); /* Add blur effect */
+      background-color: rgba(0, 0, 0, 0.6); /
+  }
 </style>
