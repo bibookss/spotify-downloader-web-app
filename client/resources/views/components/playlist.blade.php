@@ -4,7 +4,7 @@
         @if (session()->has('spotifyPlaylists'))
             @foreach (session('spotifyPlaylists') as $playlist)
                 <a href=" {{ route('spotify.playlist', ['id' => $playlist['id']]) }} "
-                    class="flex bg-spotifyCard card-animation rounded-sm items-center drop-shadow-xl">
+                    class="flex bg-spotifyCard hover:bg-[#5A5A5A] rounded-sm items-center drop-shadow-xl ">
                     <!-- Playlist Image -->
                     <img src="{{ $playlist['image'] }}" alt="{{ $playlist['name'] }}" class="sm:w-20 sm:h-20 w-12 h-12 rounded-sm">
 
@@ -15,3 +15,9 @@
         @endif
     </div>
 </div>
+
+<style scoped>
+    a:hover > img {
+        opacity: 1 !important;
+    }
+</style>
