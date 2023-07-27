@@ -39,18 +39,30 @@ class DownloadController extends Controller
         return Response::make($fileContent, 200, $headers);
     }
 
+    /**
+     * Download a playlist from the backend service
+     *
+     * @param Request $request (playlistId)
+     * @return void
+     * 
+     * Sample request:
+     * {
+     *  'items'
+     * }
+     */
     public function downloadPlaylist(Request $request) 
     {
-        $playlistId = $request->input('playlistId');
+        $playlistId = $request->input('id');
 
         $response = Http::withHeaders([
             'Authorization' => 'Bearer ' . session('spotifyAccessToken'),
-        ])->get('https://api.spotify.com/v1/playlists/' . $playlistId . '/tracks');
+        ])->get('https://api.spotify.com/v1/playlists/' . $playlistId);
 
         $response = $response->json();
-            
+        
+        $playlistName = $response['name'];
         $tracks = [];
-        foreach ($response['items'] as $track) {
+        foreach ($response['tracks']['items'] as $track) {
             $tracks[] = [
                 'title' => $track['track']['name'],
                 'artist' => $track['track']['artists'][0]['name'],
@@ -64,7 +76,7 @@ class DownloadController extends Controller
 
         $headers = [
             'Content-Type' => 'application/octet-stream',
-            'Content-Disposition' => 'attachment; filename="' . $playlistId . '.zip"',
+            'Content-Disposition' => 'attachment; filename="' . $playlistName . '.zip"',
         ];
 
         return Response::make($fileContent, 200, $headers);
