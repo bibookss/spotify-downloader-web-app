@@ -67,7 +67,7 @@ async def check_download_status(download_id: str):
     if status is None:
         raise HTTPException(status_code=404, detail="Download ID not found")
 
-    return {"download_id": download_id, "status": status, "songs": download_status.get(download_id + "_songs")}
+    return {"download_id": download_id, "status": status, "songs": download_status.get(download_id + "_songs"), "zip_file_path": download_status.get(download_id + "_zip_file_path")}
 
 # Playlist download (client-side)
 @app.post("/playlist/download/client")
@@ -81,15 +81,7 @@ async def download_playlist_client(request: Request, download_id: str):
 
     # Get the songs associated with the download_id
     songs = status_response.get("songs")
-
-    # Zip the songs from the "downloads" folder
-    zip_file_path = f"{download_id}_songs.zip"
-    with zipfile.ZipFile(zip_file_path, 'w') as zip_file:
-        for song in songs:
-            title = song.get('title')
-            song_file_path = f"downloads/{title}.m4a"
-            if os.path.exists(song_file_path):
-                zip_file.write(song_file_path, os.path.basename(song_file_path))
+    zip_file_path = status_response.get("zip_file_path")
 
     # Return the zip file as a FileResponse
     download_id = status_response.get("download_id")
@@ -125,6 +117,25 @@ async def perform_playlist_download(songs: List[Dict[str, str]], download_id: st
         # Update the download status as "completed" when the download is finished
         with download_status_lock:
             download_status[download_id] = "100%"
+
+             # Zip the songs from the "downloads" folder
+            zip_file_path = f"{download_id}_songs.zip"
+            with zipfile.ZipFile(zip_file_path, 'w') as zip_file:
+                for song in songs:
+                    title = song.get('title')
+                    song_file_path = f"downloads/{title}.m4a"
+                    if os.path.exists(song_file_path):
+                        zip_file.write(song_file_path, os.path.basename(song_file_path))
+            
+            download_status[download_id + "_zip_file_path"] = zip_file_path
+
+            # Delete the downloaded songs
+            for song in songs:
+                title = song.get('title')
+                song_file_path = f"downloads/{title}.m4a"
+                if os.path.exists(song_file_path):
+                    os.remove(song_file_path)
+            
 
     except Exception as e:
         print(f"Error in server-side download: {e}")

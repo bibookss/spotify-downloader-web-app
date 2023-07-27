@@ -100,7 +100,7 @@ class DownloadController extends Controller
     {
         $downloadId = session('downloadId');
         $response = Http::post('http://localhost:8001/playlist/download/client?download_id=' . $downloadId, ['download_id' => $downloadId]);
-
+        
         $fileContent = $response->body();
 
         $headers = [
