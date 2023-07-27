@@ -3,6 +3,7 @@
 @section('content')
 
     <body>
+        {{-- Header --}}
         <div class="container sm:px-9 px-4 py-9 flex sm:flex-row flex-col gap-x-8">
             <img class="md:w-[250px] md:h-[250px] w-[200px] h-[200px] sm:m-0 m-auto" src={{ $playListData['image'] }}
                 alt="playlist-image">
@@ -28,29 +29,32 @@
             </div>
         </div>
 
-        <div class=" sm:px-9 px-4 pb-8">
-            {{-- Download button --}}
-            <form action="{{ route('download.playlist.server') }}" method="POST">
+        <div class="sm:px-9 px-4 pb-8">
+            {{-- Bulk download button --}}
+            <form id="downloadForm" action="{{ route('download.playlist.server') }}" method="POST">
                 @csrf
                 <input type="hidden" name="id" value="{{ $playListData['id'] }}">
-                <button class="bg-[#1ED760] w-12 h-12 rounded-full flex justify-center items-center">
+                <button type="submit" class="bg-[#1ED760] w-12 h-12 rounded-full flex justify-center items-center">
                     <x-feathericon-download style="color: black" />
                 </button>
             </form>
 
             {{-- Download progress bar --}}
-            <div class="flex justify-between">
-                <span class="text-base font-medium text-spotifyGreen dark:text-white">Downloading your playlist...</span>
-                <span class="text-sm font-medium text-spotifyGreen dark:text-white">45%</span>
-            </div>
-            <div class="w-full bg-gray-200 rounded-full h-2.5 dark:bg-gray-700">
-                <div class="bg-spotifyGreen h-2.5 rounded-full" style="width: 45%"></div>
+            <div id="progressContainer" class="">
+                <div class="flex justify-between">
+                    <span class="text-base font-medium text-spotifyGreen dark:text-white">Downloading your
+                        playlist...</span>
+                    <span id="progressPercent" class="text-sm font-medium text-spotifyGreen dark:text-white">0%</span>
+                </div>
+                <div class="w-full bg-gray-200 rounded-full h-2.5 dark:bg-gray-700">
+                    <div id="progressBar" class="bg-spotifyGreen h-2.5 rounded-full" style="width: 0%"></div>
+                </div>
             </div>
         </div>
 
         <div class="sm:px-9 px-4">
             <table class="table w-full">
-                <thead class="sticky top-[60px]">
+                <thead>
                     <tr class="border-b border-[#A2A2A2] sticky top-[70px] bg-[#121212]">
                         <th style="width: 4%" class="text-center font-normal py-4">#</th>
                         <th style="width: 36%" class="text-left font-normal py-4">Title</th>
@@ -85,8 +89,17 @@
                                     @csrf
                                     <input type="hidden" name="title" value="{{ $track['name'] }}">
                                     <input type="hidden" name="artist" value="{{ $track['artist'] }}">
-                                    <button type="submit" class="">
-                                        <x-untitledui-download-circle class="w-5 h-5" style="color: #1ED760" />
+
+                                    {{-- Single download button --}}
+                                    <button type="submit" class="hidden">
+                                        <x-untitledui-download-circle class="w-5 h-5 text-spotifyGreen"  />
+                                    </button>
+
+                                    {{-- Progress bar --}}
+                                    <div class="w-full bg-gray-200 rounded-full h-1.5 mb-4 dark:bg-gray-700">
+                                        <div class="bg-spotifyGreen h-1.5 rounded-full dark:bg-spotifyGreen" style="width: 45%">
+                                        </div>
+                                    </div>
                                 </form>
                             </td>
                         </tr>
@@ -96,6 +109,47 @@
         </div>
     </body>
 @endsection
+
+<script>
+    $(document).ready(function() {
+        $("#downloadForm").submit(function(event) {
+            event.preventDefault();
+
+            // Show progress bar
+            $("#progressContainer").removeClass("hidden");
+
+            // Send AJAX request
+            $.ajax({
+                url: $(this).attr('action'),
+                type: $(this).attr('method'),
+                data: $(this).serialize(),
+                xhr: function() {
+                    var xhr = new window.XMLHttpRequest();
+
+                    // Download progress
+                    xhr.addEventListener("progress", function(evt) {
+                        if (evt.lengthComputable) {
+                            // lagay mo nalang dito
+                            var percentComplete = evt.loaded / evt.total * 100;
+                            // Update progress bar
+                            $("#progressBar").width(percentComplete + '%');
+                            $("#progressPercent").text(Math.round(percentComplete) +
+                                '%');
+                        }
+                    }, false);
+
+                    return xhr;
+                },
+                success: function(data) {
+                    // Handle the response from the server
+                },
+                error: function(data) {
+                    // Handle errors
+                }
+            });
+        });
+    });
+</script>
 
 <style scoped>
     body {
