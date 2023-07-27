@@ -36,7 +36,7 @@
         <img class="m-auto w-[60%] lg:w-[40%] md:w-[50%]" src="{{ asset('assets/logo/spot-logo.png') }}" alt="logo">
 
         <h1 class="text-3xl font-bold mt-5 px-5">
-            Music Download <span class="text-spotify">Simplified</span>.
+            Music Download <span class="text-spotifyGreen">Simplified</span>.
         </h1>
 
         <p class="font-light my-7 mx-auto px-10 md:w-[768px] text-center pb-5">Gone are the days of manual downloads of your favorite songs. Get ready for a
