@@ -32,36 +32,40 @@
 
         <div class="sm:px-9 px-4">
             <table class="table w-full">
-                <thead class="border-b border-[#A2A2A2] relative h-full">
-                    <tr>
-                        <th style="width: 3%" class="text-left pb-3">#</th>
-                        <th style="width: 37%" class="text-left pb-3">Title</th>
-                        <th style="width: 35%" class="text-left pb-3 md:table-cell hidden">Album</th>
-                        <th style="width: 10%" class="text-left pb-3 xl:table-cell hidden">Date added</th>
-                        <th style="width: 10%" class="text-left pb-3 lg:table-cell hidden">Duration</th>
-                        <th style="width: 5%" class="text-center pb-3">
-                            <x-feathericon-download class="h-7" />
+                <thead class="sticky top-[60px]">
+                    <tr class="border-b border-[#A2A2A2] sticky top-[70px] bg-[#2C0A0C]">
+                        <th style="width: 4%" class="text-center font-normal py-4">#</th>
+                        <th style="width: 36%" class="text-left font-normal py-4">Title</th>
+                        <th style="width: 35%"
+                            class="text-left font-normal md:table-cell hidden py-4">Album</th>
+                        <th style="width: 10%"
+                            class="text-left font-normal xl:table-cell hidden py-4">Date added</th>
+                        <th style="width: 10%"
+                            class="text-left font-normal lg:table-cell hidden py-4">Duration</th>
+                        <th style="width: 5%">
+                            <x-feathericon-download class="h-7 m-auto" />
                         </th>
                     </tr>
                 </thead>
                 <tbody class="pt-3">
                     @foreach ($playListData['tracks'] as $index => $track)
-                        <tr>
-                            <td>{{ $index + 1 }}</td>
+                        <tr class="list-hover">
+                            <td class="text-center text-spotifyDescription">{{ $index + 1 }}</td>
                             <td>
                                 <div class="container flex flex-row items-center py-2">
                                     <img class="w-12 h-12 mr-4 rounded" src={{ $track['image'] }} alt="track image">
                                     <div class="container flex flex-col">
-                                        <p class="font-medium sm:text-base text-sm">{{ $track['name'] }}</p>
-                                        <p class="sm:text-sm text-xs font-regular text-[#A2A2A2]">{{ $track['artist'] }}
+                                        <p class="font-medium sm:text-base text-sm ">{{ $track['name'] }}</p>
+                                        <p class="sm:text-sm text-xs font-regular text-spotifyDescription">
+                                            {{ $track['artist'] }}
                                         </p>
                                     </div>
                                 </div>
                             </td>
-                            <td class="md:table-cell hidden">{{ $track['album'] }}</td>
-                            <td class="xl:table-cell hidden">{{ $track['added_at'] }}</td>
-                            <td class="lg:table-cell hidden">{{ $track['duration'] }}</td>
-                            <td class="">
+                            <td class="md:table-cell hidden text-spotifyDescription">{{ $track['album'] }}</td>
+                            <td class="xl:table-cell hidden text-spotifyDescription">{{ $track['added_at'] }}</td>
+                            <td class="lg:table-cell hidden text-spotifyDescription">{{ $track['duration'] }}</td>
+                            <td class="text-center">
                                 <form action="{{ route('download.song') }}" method="POST" class="m-0">
                                     @csrf
                                     <input type="hidden" name="title" value="{{ $track['name'] }}">
@@ -82,6 +86,6 @@
     body {
         color: white;
         padding-top: 6rem;
-        background: linear-gradient(180deg, #3A0609 0%, #121212 35.94%);
+        background: linear-gradient(180deg, #380609 0%, #230D0E 100%) fixed;
     }
 </style>
