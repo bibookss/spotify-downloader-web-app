@@ -260,6 +260,30 @@ class SpotifyController extends Controller
         return $categories;
     }
 
+    public function search(Request $request)
+    {
+        $query = $request->input('q');
+        $response = Http::withHeaders([
+            'Authorization' => 'Bearer ' . session('spotifyAccessToken'),
+        ])->get('https://api.spotify.com/v1/search?q=' . $query . '&type=playlist');
+
+        $response = $response->json();
+
+        $playlists = [];
+        foreach ($response['playlists']['items'] as $playlist) {
+            $playlists[] = [
+                'name' => $playlist['name'],
+                'image' => $playlist['images'][0]['url'],
+                'id' => $playlist['id'],
+                'description' => $playlist['description'],
+                'owner' => $playlist['owner']['display_name'],
+                'url' => $playlist['external_urls']['spotify'],
+            ];
+        }   
+
+        return $playlists;
+    }
+
     // Helper function to convert the milliseconds duration to text
     function millisecondsToText($milliseconds) {
         $seconds = floor($milliseconds / 1000);
