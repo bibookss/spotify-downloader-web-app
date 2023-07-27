@@ -273,7 +273,7 @@ class SpotifyController extends Controller
         foreach ($response['playlists']['items'] as $playlist) {
             $playlists[] = [
                 'name' => $playlist['name'],
-                'image' => $playlist['images'][0]['url'],
+                'image' => $playlist['images'][0]['url'] ?? null,
                 'id' => $playlist['id'],
                 'description' => $playlist['description'],
                 'owner' => $playlist['owner']['display_name'],
@@ -281,7 +281,7 @@ class SpotifyController extends Controller
             ];
         }   
 
-        return $playlists;
+        return view('search-result-page', ['playlists' => $playlists]);
     }
 
     // Helper function to convert the milliseconds duration to text
