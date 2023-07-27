@@ -23,9 +23,13 @@
     </div>
 
     <div class="container sm:px-9 px-4 pb-8">
-        <button class="bg-[#1ED760] w-12 h-12 rounded-full flex justify-center items-center">
-            <x-feathericon-download style="color: black"/>
-        </button>
+        <form action="{{ route('download.playlist') }}" method="POST">
+            @csrf
+            <input type="hidden" name="id" value="{{ $playListData['id'] }}">
+            <button class="bg-[#1ED760] w-12 h-12 rounded-full flex justify-center items-center">
+                <x-feathericon-download style="color: black"/>
+            </button>
+        </form>
     </div>
 
     <div class="sm:px-9 px-4">
