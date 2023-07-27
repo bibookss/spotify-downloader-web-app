@@ -2,7 +2,7 @@
     <!-- Display Playlist Image -->
     <img src="{{ $playlist['image'] }}" alt="{{ $playlist['name'] }}" class="sm:w-40 sm:h-40 w-32 h-32 object-cover rounded-md">
 
-    <a href="https://open.spotify.com/playlist/{{ $playlist['id'] }}"
+    <a href="{{ route('spotify.playlist', ['id' => $playlist['id']]) }}"
         class="text-white sm:text-base text-sm font-bold mt-4 block overflow-hidden whitespace-nowrap text-overflow-ellipsis">{{ $playlist['name'] }}
     </a>
 
