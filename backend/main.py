@@ -5,16 +5,9 @@ import os
 from youtubesearchpython import VideosSearch
 from typing import List, Dict
 import zipfile
-from io import BytesIO
-
-
-def get_youtube_url(title, artist):
-    search = VideosSearch(f'{title}, by {artist}', limit=1)
-    result = search.result()
-    url = result['result'][0]['link']
-    
-    return url
-
+import aiohttp
+import asyncio
+import aiofiles
 
 app = FastAPI()
 
@@ -51,43 +44,71 @@ async def download_playlist(request: Request, songs: List[Dict[str, str]]):
     if not songs:
         raise HTTPException(status_code=400, detail="No songs provided")
 
-    # Create an in-memory zip file
-    zip_file_buffer = BytesIO()
+    async def generate_zip():
+        # Create a temporary zip file to store the songs
+        zip_file_path = 'songs.zip'
+        with zipfile.ZipFile(zip_file_path, 'w') as zip_file:
+            async with aiohttp.ClientSession() as session:
+                tasks = []
 
-    with zipfile.ZipFile(zip_file_buffer, 'w') as zip_file:
-        for song in songs:
-            title = song.get('title')
-            artist = song.get('artist')
+                for song in songs:
+                    title = song.get('title')
+                    artist = song.get('artist')
 
-            if not title or not artist:
-                raise HTTPException(status_code=400, detail="Invalid song data")
+                    if not title or not artist:
+                        raise HTTPException(status_code=400, detail="Invalid song data")
 
-            link = get_youtube_url(title, artist)
+                    link = get_youtube_url(title, artist)
+                    tasks.append(download(session, link, title, artist))
 
-            ydl_opts = {
-                'format': 'm4a/bestaudio/best',
-                'postprocessors': [{  
-                    'key': 'FFmpegExtractAudio',
-                    'preferredcodec': 'm4a',
-                }],
-                'outtmpl': f'downloads/{title}.%(ext)s'
-            }
+                downloaded_songs = await asyncio.gather(*tasks)
 
-            with yt_dlp.YoutubeDL(ydl_opts) as ydl:
-                ydl.download([link])
+                for song_path in downloaded_songs:
+                    zip_file.write(song_path, os.path.basename(song_path))
 
-            path = f'downloads/{title}.m4a'
-            if not os.path.exists(path):
-                raise HTTPException(status_code=404, detail=f"{title} - {artist} not found")
+                    # Clean up the downloaded song
+                    os.remove(song_path)
 
-            # Add the downloaded song to the zip archive
-            zip_file.write(path, os.path.basename(path))
+        # Return the temporary zip file as a streaming response
+        async with aiofiles.open(zip_file_path, mode='rb') as f:
+            while True:
+                chunk = await f.read(65536)  # Read in 64KB chunks (adjust the size as needed)
+                if not chunk:
+                    break
+                yield chunk
 
-            # Clean up the downloaded song
-            os.remove(path)
+        # Remove the temporary zip file after streaming is done
+        os.remove(zip_file_path)
 
-    # Seek back to the beginning of the zip file buffer
-    zip_file_buffer.seek(0)
+    response = StreamingResponse(generate_zip(), media_type='application/zip')
+    response.headers["Content-Disposition"] = "attachment; filename=songs.zip"
+    return response
 
-    # Return the zip file as a StreamingResponse
-    return StreamingResponse(zip_file_buffer, media_type='application/zip', headers={"Content-Disposition": "attachment; filename=songs.zip"})
+
+####################
+
+def get_youtube_url(title, artist):
+    search = VideosSearch(f'{title}, by {artist}', limit=1)
+    result = search.result()
+    url = result['result'][0]['link']
+    
+    return url
+
+async def download(session, link, title, artist):
+    ydl_opts = {
+        'format': 'm4a/bestaudio/best',
+        'postprocessors': [{  
+            'key': 'FFmpegExtractAudio',
+            'preferredcodec': 'm4a',
+        }],
+        'outtmpl': f'downloads/{title}.%(ext)s'
+    }
+
+    with yt_dlp.YoutubeDL(ydl_opts) as ydl:
+        await asyncio.to_thread(ydl.download, [link])
+
+    path = f'downloads/{title}.m4a'
+    if not os.path.exists(path):
+        raise HTTPException(status_code=404, detail=f"{title} - {artist} not found")
+
+    return path
