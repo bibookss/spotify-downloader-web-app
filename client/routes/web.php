@@ -39,4 +39,6 @@ Route::get('/spotify/playlist/search', [SpotifyController::class, 'search'])->na
 
 // Download
 Route::post('/download/song', [DownloadController::class, 'download'])->name('download.song');
-Route::post('/download/playlist', [DownloadController::class, 'downloadPlaylist'])->name('download.playlist');
+Route::post('/download/playlist', [DownloadController::class, 'initiatePlaylistDownload'])->name('download.playlist.server');
+Route::get('/download/playlist', [DownloadController::class, 'downloadPlaylist'])->name('download.playlist.client');
+Route::get('/download/playlist/progress', [DownloadController::class, 'checkPlaylistDownloadStatus'])->name('download.playlist.progress');

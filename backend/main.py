@@ -7,7 +7,6 @@ from typing import List, Dict
 import zipfile
 import aiohttp
 import asyncio
-import aiofiles
 import uuid
 import threading
 
