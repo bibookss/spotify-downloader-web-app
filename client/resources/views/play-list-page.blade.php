@@ -56,8 +56,15 @@
                         <td class="md:table-cell hidden">{{ $track['album'] }}</td>
                         <td class="xl:table-cell hidden">{{ $track['added_at']}}</td>
                         <td class="lg:table-cell hidden">{{ $track['duration'] }}</td>
-                        <td><x-untitledui-download-circle class="w-5 h-5" style="color: #1ED760"/></td>
-                    </tr>
+                        <td>
+                            <form action="{{ route('download.song') }}" method="POST">
+                                @csrf
+                                <input type="hidden" name="title" value="{{ $track['name'] }}">
+                                <input type="hidden" name="artist" value="{{ $track['artist'] }}"> 
+                                <button type="submit">
+                                    <x-untitledui-download-circle class="w-5 h-5" style="color: #1ED760"/>
+                            </form>
+                        </td>                    </tr>
                 @endforeach
             </tbody>
         </table>
