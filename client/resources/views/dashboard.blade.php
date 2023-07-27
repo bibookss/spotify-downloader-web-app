@@ -12,11 +12,23 @@
             <h1 class="sm:text-3xl text-xl text-white font-bold mt-10">Featured Playlists</h1>
 
             {{-- Render user's featured playlists --}}
-            <x-featured-playlist />
+            <div class="flex flex-nowrap sm:gap-6 gap-4 max-w-full overflow-x-auto my-scroll sm:py-10 py-6">
+                @if (session()->has('spotifyFeaturedPlaylists'))
+                    @foreach (session('spotifyFeaturedPlaylists') as $playlist)
+                        <x-play-list-card :playlist="$playlist"/>
+                    @endforeach
+                @endif
+            </div>
 
             <h1 class="sm:text-3xl text-xl text-white font-bold mt-10">Category Playlists</h1>
             {{-- Render user's category playlist --}}
-            <x-category-playlist />
+            <div class="flex flex-nowrap sm:gap-6 gap-4 max-w-full overflow-x-auto my-scroll sm:py-10 py-6">
+                @if (session()->has('spotifyFeaturedPlaylists'))
+                    @foreach (session('spotifyFeaturedPlaylists') as $playlist)
+                        <x-play-list-card :playlist="$playlist"/>
+                    @endforeach
+                @endif
+            </div>
         </div>
     </body>
 @endsection

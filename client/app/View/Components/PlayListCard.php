@@ -6,14 +6,17 @@ use Closure;
 use Illuminate\Contracts\View\View;
 use Illuminate\View\Component;
 
-class FeaturedPlaylist extends Component
+class PlayListCard extends Component
 {
     /**
      * Create a new component instance.
      */
-    public function __construct()
+
+    public $playlist;
+    
+    public function __construct($playlist)
     {
-        //
+        $this->playlist = $playlist;
     }
 
     /**
@@ -21,6 +24,6 @@ class FeaturedPlaylist extends Component
      */
     public function render(): View|Closure|string
     {
-        return view('components.featured-playlist');
+        return view('components.play-list-card');
     }
 }
