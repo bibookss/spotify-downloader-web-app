@@ -9,8 +9,8 @@
                     class="text-white sm:text-base text-sm font-bold mt-4 block overflow-hidden whitespace-nowrap text-overflow-ellipsis">{{ $playlist['name'] }}
                 </a>
 
-                <p class="text-spotifyCardDescription block overflow-hidden whitespace-nowrap text-overflow-ellipsis sm:text-base text-xs">
-                     {{ $playlist['description'] }} 
+                <p class="text-spotifyDescription block overflow-hidden whitespace-nowrap text-overflow-ellipsis sm:text-base text-xs">
+                     {{ $playlist['description'] }}
                 </p>
 
                 <!-- Display artists -->
