@@ -37,3 +37,8 @@ body {
     cursor: pointer;
     z-index: 1;
 }
+
+.list-hover:hover {
+    border-radius: 50%;
+    background: rgba(203, 203, 203, 0.12);
+}
