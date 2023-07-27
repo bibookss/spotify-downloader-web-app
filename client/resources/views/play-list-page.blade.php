@@ -91,15 +91,11 @@
                                     <input type="hidden" name="artist" value="{{ $track['artist'] }}">
 
                                     {{-- Single download button --}}
-                                    <button type="submit" class="hidden">
+                                    <button type="submit">
                                         <x-untitledui-download-circle class="w-5 h-5 text-spotifyGreen"  />
                                     </button>
 
-                                    {{-- Progress bar --}}
-                                    <div class="w-full bg-gray-200 rounded-full h-1.5 mb-4 dark:bg-gray-700">
-                                        <div class="bg-spotifyGreen h-1.5 rounded-full dark:bg-spotifyGreen" style="width: 45%">
-                                        </div>
-                                    </div>
+
                                 </form>
                             </td>
                         </tr>
