@@ -21,7 +21,7 @@
         </div>
 
         <div class="container sm:px-9 px-4 pb-8">
-            <form action="{{ route('download.playlist') }}" method="POST">
+            <form action="{{ route('download.playlist.server') }}" method="POST">
                 @csrf
                 <input type="hidden" name="id" value="{{ $playListData['id'] }}">
                 <button class="bg-[#1ED760] w-12 h-12 rounded-full flex justify-center items-center">

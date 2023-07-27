@@ -50,7 +50,7 @@ class DownloadController extends Controller
      *  'items'
      * }
      */
-    public function downloadPlaylist(Request $request) 
+    public function initiatePlaylistDownload(Request $request) 
     {
         $playlistId = $request->input('id');
 
@@ -69,14 +69,43 @@ class DownloadController extends Controller
             ];
         }
 
-        $timeout = 0;
-        $response = Http::timeout($timeout)->post('http://localhost:8001/playlist/download', $tracks);
+        $response = Http::post('http://localhost:8001/playlist/download/server', $tracks)->json();
+        
+        // Store the download id in the session
+        $downloadId = $response['download_id'];
+        session(['downloadId' => $downloadId]);
+        
+        return back();
+    }
+
+    /**
+     * Check the status of a playlist download
+     *
+     * @return void
+     */
+    public function checkPlaylistDownloadStatus()
+    {
+        $downloadId = session('downloadId');
+        $response = Http::get('http://localhost:8001/playlist/download/status/' . $downloadId)->json();
+        dd($response);
+        return back();
+    }
+
+    /**
+     * Download a playlist from the backend service
+     *
+     * @return void
+     */
+    public function downloadPlaylist()
+    {
+        $downloadId = session('downloadId');
+        $response = Http::post('http://localhost:8001/playlist/download/client', ['download_id' => $downloadId]);
 
         $fileContent = $response->body();
 
         $headers = [
             'Content-Type' => 'application/octet-stream',
-            'Content-Disposition' => 'attachment; filename="' . $playlistName . '.zip"',
+            'Content-Disposition' => 'attachment; filename="' . $downloadId . '.zip"',
         ];
 
         return Response::make($fileContent, 200, $headers);
