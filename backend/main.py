@@ -75,9 +75,7 @@ async def download_playlist_client(request: Request, download_id: str):
     # Here, you can check the status of the download using the `download_id`
     status_response = await check_download_status(download_id)
 
-    print(status_response)
-
-    if status_response.get("status") != "completed":
+    if status_response.get("status") != "100%":
         # Return an appropriate response indicating the download is not yet completed
         return {"message": "Download in progress. Please try again later."}
 
@@ -100,11 +98,12 @@ async def download_playlist_client(request: Request, download_id: str):
 # Helper functions
 async def perform_playlist_download(songs: List[Dict[str, str]], download_id: str):
     try:
+        total_songs = len(songs)
+
         # Update the download status as "in_progress" when the download starts
         with download_status_lock:
-            download_status[download_id] = "in_progress"
+            download_status[download_id] = "0%"
             download_status[download_id + "_songs"] = songs  # Store the songs data
-
 
         # Create a list to store download tasks
         tasks = []
@@ -118,14 +117,14 @@ async def perform_playlist_download(songs: List[Dict[str, str]], download_id: st
                     raise HTTPException(status_code=400, detail="Invalid song data")
 
                 link = get_youtube_url(title, artist)
-                tasks.append(download(session, link, title, artist))
+                tasks.append(download(session, link, title, artist, download_id, total_songs))
 
             # Wait for all download tasks to complete
             await asyncio.gather(*tasks)
 
         # Update the download status as "completed" when the download is finished
         with download_status_lock:
-            download_status[download_id] = "completed"
+            download_status[download_id] = "100%"
 
     except Exception as e:
         print(f"Error in server-side download: {e}")
@@ -135,22 +134,33 @@ async def perform_playlist_download(songs: List[Dict[str, str]], download_id: st
         with download_status_lock:
             download_status[download_id] = "failed"
 
-async def download(session, link, title, artist):
+async def download(session, link, title, artist, download_id,  total_songs):
     ydl_opts = {
         'format': 'm4a/bestaudio/best',
         'postprocessors': [{  
             'key': 'FFmpegExtractAudio',
             'preferredcodec': 'm4a',
         }],
-        'outtmpl': f'downloads/{title}.%(ext)s'
+        'outtmpl': f'downloads/{title}.%(ext)s'  # Modified to include download_id in filename
     }
 
     with yt_dlp.YoutubeDL(ydl_opts) as ydl:
         await asyncio.to_thread(ydl.download, [link])
 
-    path = f'downloads/{title}.m4a'
+    path = f'downloads/{title}.m4a'  # Modified to include download_id in filename
     if not os.path.exists(path):
         raise HTTPException(status_code=404, detail=f"{title} - {artist} not found")
+
+    # Update the download progress for the song
+    with download_status_lock:
+        completed_songs = download_status.get(download_id + "_completed_songs", 0) + 1
+        download_status[download_id + "_completed_songs"] = completed_songs
+    
+        # Calculate the download progress as a percentage
+        progress = int((completed_songs / total_songs) * 100)
+
+        # Update the download status with the progress percentage
+        download_status[download_id] = f"{progress}%"
 
     return path
 
