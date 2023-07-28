@@ -89,6 +89,10 @@ class DownloadController extends Controller
         $downloadId = session('downloadId');
         $response = Http::get('http://localhost:8001/playlist/download/status/' . $downloadId)->json();
 
+        if ($response['status'] === 'failed') {
+            return response()->json(['error' => 'Download failed'], 500);
+        }
+
         return $response['status'];
     }
 
