@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Response;
+use Symfony\Component\HttpFoundation\StreamedResponse;
 
 class DownloadController extends Controller
 {
@@ -98,17 +99,29 @@ class DownloadController extends Controller
      */
     public function downloadPlaylist()
     {
+        ini_set('memory_limit', '512M'); // Set a higher memory limit, adjust as needed
         $downloadId = session('downloadId');
-        $response = Http::post('http://localhost:8001/playlist/download/client?download_id=' . $downloadId, ['download_id' => $downloadId]);
-        
-        $fileContent = $response->body();
+        $url = 'http://localhost:8001/playlist/download/client';
+        try {
+            $response = Http::withOptions([
+                'stream' => true,
+            ])->get($url, ['download_id' => $downloadId]);
 
-        $headers = [
-            'Content-Type' => 'application/octet-stream',
-            'Content-Disposition' => 'attachment; filename="' . $downloadId . '.zip"',
-        ];
+            if ($response->ok()) {
+                $headers = [
+                    'Content-Type' => 'application/zip',
+                    'Content-Disposition' => 'attachment; filename="downloaded_file.zip"',
+                ];
 
-        return Response::make($fileContent, 200, $headers);
+                return response()->streamDownload(function () use ($response) {
+                    echo $response->body();
+                }, $downloadId . 'zip', $headers);
+            } else {
+                return response()->json(['error' => 'Download failed'], $response->status());
+            }
+        } catch (Exception $e) {
+            return response()->json(['error' => 'An error occurred during the download'], 500);
+        }
     }
 }
 
