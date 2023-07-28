@@ -119,7 +119,7 @@ class DownloadController extends Controller
 
                 return response()->streamDownload(function () use ($response) {
                     echo $response->body();
-                }, $downloadId . 'zip', $headers);
+                }, $downloadId . '.zip', $headers);
             } else {
                 return response()->json(['error' => 'Download failed'], $response->status());
             }
