@@ -6,6 +6,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Response;
 use Symfony\Component\HttpFoundation\StreamedResponse;
+use Illuminate\Support\Facades\Session;
+
 
 class DownloadController extends Controller
 {
@@ -53,6 +55,7 @@ class DownloadController extends Controller
      */
     public function initiatePlaylistDownload(Request $request) 
     {
+        Session::forget('downloadId');
         $playlistId = $request->input('id');
 
         $response = Http::withHeaders([
@@ -71,12 +74,11 @@ class DownloadController extends Controller
         }
 
         $response = Http::post('http://localhost:8001/playlist/download/server', $tracks)->json();
-        
         // Store the download id in the session
         $downloadId = $response['download_id'];
         session(['downloadId' => $downloadId]);
         
-        return back();
+        return response()->json(['download_id' => $downloadId]);
     }
 
     /**
@@ -125,7 +127,10 @@ class DownloadController extends Controller
             }
         } catch (Exception $e) {
             return response()->json(['error' => 'An error occurred during the download'], 500);
-        }
+        }  
+        // finally {
+        //     Session::forget('downloadId');
+        // }
     }
 }
 

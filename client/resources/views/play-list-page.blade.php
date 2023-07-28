@@ -40,14 +40,14 @@
             </form>
 
             {{-- Download progress bar --}}
-            <div id="progressContainer" class="">
+            <div id="progressContainer" class="hidden">
                 <div class="flex justify-between">
                     <span class="text-base font-medium text-spotifyGreen dark:text-white">Downloading your
                         playlist...</span>
                     <span id="progressPercent" class="text-sm font-medium text-spotifyGreen dark:text-white">0%</span>
                 </div>
                 <div class="w-full bg-gray-200 rounded-full h-2.5 dark:bg-gray-700">
-                    <div id="progressBar" class="bg-spotifyGreen h-2.5 rounded-full" style="width: 0%"></div>
+                    <div id="progressBar" class="bg-spotifyGreen h-2.5 rounded-full" style="width: 0%" data-max="100%"></div>
                 </div>
             </div>
         </div>
@@ -107,43 +107,87 @@
 @endsection
 
 <script>
-    $(document).ready(function() {
-        $("#downloadForm").submit(function(event) {
-            event.preventDefault();
+    document.addEventListener("DOMContentLoaded", function () {
+        const downloadForm = document.getElementById("downloadForm");
+        const progressContainer = document.getElementById("progressContainer");
+        const progressBar = document.getElementById("progressBar");
+        const progressPercent = document.getElementById("progressPercent");
 
-            // Show progress bar
-            $("#progressContainer").removeClass("hidden");
+        downloadForm.addEventListener("submit", function (event) {
+            event.preventDefault(); // Prevent the default form submission
 
-            // Send AJAX request
-            $.ajax({
-                url: $(this).attr('action'),
-                type: $(this).attr('method'),
-                data: $(this).serialize(),
-                xhr: function() {
-                    var xhr = new window.XMLHttpRequest();
+            // Show the progress bar
+            progressContainer.classList.remove("hidden");
 
-                    // Download progress
-                    xhr.addEventListener("progress", function(evt) {
-                        if (evt.lengthComputable) {
-                            // lagay mo nalang dito
-                            var percentComplete = evt.loaded / evt.total * 100;
-                            // Update progress bar
-                            $("#progressBar").width(percentComplete + '%');
-                            $("#progressPercent").text(Math.round(percentComplete) +
-                                '%');
-                        }
-                    }, false);
-
-                    return xhr;
+            // Start the playlist download initiation using AJAX
+            fetch("{{ route('download.playlist.server') }}", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    "X-CSRF-TOKEN": "{{ csrf_token() }}", // Add the CSRF token for Laravel protection
                 },
-                success: function(data) {
-                    // Handle the response from the server
-                },
-                error: function(data) {
-                    // Handle errors
+                body: JSON.stringify({
+                    id: "{{ $playListData['id'] }}", // Replace this with the playlist ID from your PHP variable
+                }),
+            })
+            .then(response => response.json())
+            .then(data => {
+                // Handle the response as needed
+                console.log("Initiate playlist download response:", data);
+                // If you receive a download ID from the server, you can start checking the progress and download completion
+                if (data.download_id) {
+                    checkDownloadProgress(data.download_id);
                 }
+            })
+            .catch(error => {
+                console.error("Error initiating playlist download:", error);
             });
         });
+
+        function checkDownloadProgress(downloadId) {
+            setTimeout(() => {
+                // Start fetching the progress value from the server after the initial delay
+                const progressCheckInterval = setInterval(() => {
+                    fetch("{{ route('download.playlist.progress') }}") // Fetch the progress from the server
+                        .then(response => response.json())
+                        .then(data => {
+                            console.log("Progress data from server:", data); // Check the data received
+                            const progress = data;
+                            if (progress === "failed") {
+                                // Download failed, stop checking progress
+                                clearInterval(progressCheckInterval);
+                                // Handle the failure, e.g., display an error message
+                                console.error("Download failed.");
+                                // Hide the progress bar after a brief delay (1 second in this example)
+                                setTimeout(() => {
+                                    progressContainer.classList.add("hidden");
+                                }, 1000);
+                            } else if (!isNaN(progress) && progress >= 0 && progress <= 100) {
+                                // Update the progress bar for valid numeric progress values
+                                progressBar.style.width = `${progress}%`;
+                                progressPercent.textContent = `${progress}%`;
+
+                                if (progress === 100) {
+                                    // Download is complete, stop checking progress
+                                    clearInterval(progressCheckInterval);
+
+                                    window.location.href = "{{ route('download.playlist.client') }}";
+
+                                    // Hide the progress bar after a brief delay (1 second in this example)
+                                    setTimeout(() => {
+                                        progressContainer.classList.add("hidden");
+                                    }, 1000);
+                                }
+                            } else {
+                                console.error("Invalid progress value:", progress);
+                            }
+                        })
+                        .catch(error => {
+                            console.error("Error fetching progress:", error);
+                        });
+                }, 3000); // Check progress every 1 second (adjust as needed)
+            }, 3000); // Initial delay of 10 seconds before the first progress check
+        }
     });
 </script>
 
