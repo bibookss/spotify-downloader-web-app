@@ -10,9 +10,13 @@
         class="text-white sm:text-base text-sm font-bold mt-4 block overflow-hidden whitespace-nowrap text-overflow-ellipsis">{{ $album['name'] }}
     </a>
 
+    
     @if (isset($album['release_date']))
         <p class="text-spotifyDescription block overflow-hidden whitespace-nowrap text-overflow-ellipsis sm:text-base text-xs">
             {{ $album['release_date'] }}
+            @if(isset($album['artist'])) 
+            • {{$album['artist']}}
+            @endif
         </p>
     @endif
 </div>

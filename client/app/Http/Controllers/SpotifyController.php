@@ -324,7 +324,7 @@ class SpotifyController extends Controller
         $query = $request->input('q');
         $response = Http::withHeaders([
             'Authorization' => 'Bearer ' . session('spotifyAccessToken'),
-        ])->get('https://api.spotify.com/v1/search?q=' . $query . '&type=playlist');
+        ])->get('https://api.spotify.com/v1/search?q=' . $query . '&type=playlist,album');
 
         $response = $response->json();
 
@@ -340,7 +340,25 @@ class SpotifyController extends Controller
             ];
         }   
 
-        return view('search-result-page', ['playlists' => $playlists]);
+        $albums = [];
+        foreach ($response['albums']['items'] as $album) {
+            $albums[] = [
+                'name' => $album['name'],
+                'image' => $album['images'][0]['url'] ?? null,
+                'id' => $album['id'],
+                'artist' => $album['artists'][0]['name'],
+                'release_date' =>  substr($album['release_date'], 0, 4)
+            ];
+        }
+
+        $result = [
+            'albums' => $albums,
+            'playlists' => $playlists
+        ];
+
+        // dd($result);
+
+        return view('search-result-page', ['result' => $result]);
     }
 
     // Helper function to convert the milliseconds duration to text
