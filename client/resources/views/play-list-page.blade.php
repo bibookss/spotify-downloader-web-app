@@ -14,8 +14,9 @@
                 <div
                     class="container flex md:flex-row md:items-center md:justify-normal flex-col justify-center gap-x-2 gap-y-2 sm:pt-0 pt-5">
                     <div class="flex flex-row items-center">
-                        <img class="rounded-full w-8 h-8 mr-2" src="{{ session('spotifyUser')['image'] }}" alt="owner-image">
-                        <p class="text-white font-semibold text-sm ">{{ $playListData['owner'] }}
+                        <img class="rounded-full w-8 h-8 mr-2" src="{{ $playListData['owner_picture'] }}" alt="owner-image">
+                        <p class="text-white font-semibold text-sm ">
+                            {{ $playListData['owner'] }}
                         <p class="md:block hidden">•</p>
                         </p>
                     </div>
