@@ -14,14 +14,14 @@
                 </div>
             @endif
 
-            <h1 class="sm:text-3xl text-xl text-white font-bold pt-14">Albums</h1>
+            {{-- <h1 class="sm:text-3xl text-xl text-white font-bold pt-14">Albums</h1>
             @if(isset($result['albums']))
                 <div class="flex flex-nowrap sm:gap-6 gap-4 max-w-full overflow-x-auto my-scroll sm:py-10 py-6">
                     @foreach ($result['albums'] as $album)
                         <x-album-card :album="$album"/>
                     @endforeach
                 </div>
-            @endif
+            @endif --}}
 
         </div>
     </body>
