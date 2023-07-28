@@ -7,25 +7,11 @@ A Laravel web app to download songs from your favorite Spotify artists, albums, 
 - [ ] Search for songs, albums, and playlists
 - [ ] View popular playlists from Spotify
 
-## Installation
-#### Backend
-```
-cd backend
-pip install -r requirements.txt
-brew install ffmpeg
-```
-
-### Frontend
-```
-
-```
-
 ## Usage
 #### Backend
 Run the backend service
 ```
-cd backend
-uvicorn main:app --port 8001
+docker compose build && docker compose up -d
 ```
 
 #### Frontend
