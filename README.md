@@ -15,8 +15,32 @@ pip install -r requirements.txt
 brew install ffmpeg
 ```
 
+### Frontend
+```
+
+```
+
+## Usage
+#### Backend
+Run the backend service
+```
+cd backend
+uvicorn main:app --port 8001
+```
+
+#### Frontend
+```
+cd client
+php artisan serve
+```
+```
+cd client
+npm run dev
+```
+
 ### *Frontend Team:*
 - [**Martin Edgar Atole**](https://github.com/CS-Martin) (Lead)
+- [**Noel Emaas**](https://github.com/NoelEmaas)
 
 ### *Backend Team:*
 - [**Albert Perez**](https://github.com/bibookss) (Lead)
@@ -54,13 +78,3 @@ brew install ffmpeg
         - Commit Hash (Optional):
             - Create a branch of [layer]/[description] from a previous commit using the [commit-hash].
 ---
-
-## Usage
-#### Backend
-Run the backend service
-```
-cd backend
-uvicorn main:app
-```
-
-#### Frontend
