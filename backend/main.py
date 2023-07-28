@@ -70,8 +70,8 @@ async def check_download_status(download_id: str):
     return {"download_id": download_id, "status": status, "songs": download_status.get(download_id + "_songs"), "zip_file_path": download_status.get(download_id + "_zip_file_path")}
 
 # Playlist download (client-side)
-@app.post("/playlist/download/client")
-async def download_playlist_client(request: Request, download_id: str):
+@app.get("/playlist/download/client")
+async def download_playlist_client(download_id: str):
     # Here, you can check the status of the download using the `download_id`
     status_response = await check_download_status(download_id)
 
@@ -83,9 +83,12 @@ async def download_playlist_client(request: Request, download_id: str):
     songs = status_response.get("songs")
     zip_file_path = status_response.get("zip_file_path")
 
-    # Return the zip file as a FileResponse
-    download_id = status_response.get("download_id")
+    # Return the zip file as a FileResponse and status code 200 if the download is completed
+    if not zip_file_path:
+        raise HTTPException(status_code=404, detail="Zip file not found")
+
     return FileResponse(zip_file_path, media_type='application/zip', filename=f"{download_id}.zip")
+
 
 # Helper functions
 async def perform_playlist_download(songs: List[Dict[str, str]], download_id: str):
