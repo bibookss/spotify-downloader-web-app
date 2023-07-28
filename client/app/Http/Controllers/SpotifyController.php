@@ -208,7 +208,7 @@ class SpotifyController extends Controller
             'name' => $response['name'],
             'image' => $response['images'][0]['url'],
             'id' => $response['id'],
-            'release_date' => $response['release_date'],
+            'release_date' => substr($response['release_date'], 0, 4),
             'artist' => $response['artists'][0]['name'],
             'num_tracks' => $response['total_tracks'],
         ];
@@ -229,7 +229,7 @@ class SpotifyController extends Controller
         }        
 
         $album['tracks'] = $tracks;
-        $album['artists_albums'] = $this->getArtistAlbums($response['artists'][0]['id']);
+        $album['artist_albums'] = $this->getArtistAlbums($response['artists'][0]['id']);
 
         // dd($album);
 
@@ -249,7 +249,7 @@ class SpotifyController extends Controller
                 'name' => $album['name'],
                 'id' => $album['id'],
                 'image' => $album['images'][0]['url'],
-                'release_date' => $album['release_date']
+                'release_date' => substr($album['release_date'], 0, 4),
             ];
         }
 

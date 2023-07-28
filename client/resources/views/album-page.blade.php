@@ -101,10 +101,17 @@
             </table>
         </div>
 
-        <div class="sm:px-9 px-4 pb-8">
-            <h1 class="sm:text-3xl text-xl text-white font-bold mt-10">More by {{$albumData['artist']}}</h1>
-            
+        <div class="sm:px-9 px-4" style="padding-top: 50px;">
+            <h1 class="sm:text-3xl text-xl text-white font-bold">More by {{$albumData['artist']}}</h1>
+            @if(isset($albumData['artist_albums']))
+                <div class="flex flex-nowrap sm:gap-6 gap-4 max-w-full overflow-x-auto my-scroll sm:py-10 py-6">
+                    @foreach ($albumData['artist_albums'] as $album)
+                        <x-album-card :album="$album"/>
+                    @endforeach
+                </div>
+            @endif
         </div>
+
     </body>
 @endsection
 
