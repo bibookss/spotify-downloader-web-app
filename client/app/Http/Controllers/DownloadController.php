@@ -88,8 +88,8 @@ class DownloadController extends Controller
     {
         $downloadId = session('downloadId');
         $response = Http::get('http://localhost:8001/playlist/download/status/' . $downloadId)->json();
-        dd($response);
-        return back();
+
+        return $response['status'];
     }
 
     /**

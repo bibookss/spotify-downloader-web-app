@@ -75,7 +75,7 @@ async def download_playlist_client(download_id: str):
     # Here, you can check the status of the download using the `download_id`
     status_response = await check_download_status(download_id)
 
-    if status_response.get("status") != "100%":
+    if status_response.get("status") != "100":
         # Return an appropriate response indicating the download is not yet completed
         return {"message": "Download in progress. Please try again later."}
 
@@ -97,7 +97,7 @@ async def perform_playlist_download(songs: List[Dict[str, str]], download_id: st
 
         # Update the download status as "in_progress" when the download starts
         with download_status_lock:
-            download_status[download_id] = "0%"
+            download_status[download_id] = "0"
             download_status[download_id + "_songs"] = songs  # Store the songs data
 
         # Create a list to store download tasks
@@ -119,10 +119,10 @@ async def perform_playlist_download(songs: List[Dict[str, str]], download_id: st
 
         # Update the download status as "completed" when the download is finished
         with download_status_lock:
-            download_status[download_id] = "100%"
+            download_status[download_id] = "100"
 
              # Zip the songs from the "downloads" folder
-            zip_file_path = f"{download_id}_songs.zip"
+            zip_file_path = f"downloads/{download_id}_songs.zip"
             with zipfile.ZipFile(zip_file_path, 'w') as zip_file:
                 for song in songs:
                     title = song.get('title')
@@ -174,7 +174,7 @@ async def download(session, link, title, artist, download_id,  total_songs):
         progress = int((completed_songs / total_songs) * 100)
 
         # Update the download status with the progress percentage
-        download_status[download_id] = f"{progress}%"
+        download_status[download_id] = f"{progress}"
 
     return path
 
