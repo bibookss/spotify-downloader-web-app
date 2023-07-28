@@ -197,6 +197,44 @@ class SpotifyController extends Controller
         return view('play-list-page', ['playListData' => $playlist]);
     }
 
+    public function album(Request $request) {
+        $response = Http::withHeaders([
+            'Authorization' => 'Bearer ' . session('spotifyAccessToken'),
+        ])->get('https://api.spotify.com/v1/albums/' . $request->id);
+
+        $response = $response->json();
+
+        $album = [
+            'name' => $response['name'],
+            'image' => $response['images'][0]['url'],
+            'id' => $response['id'],
+            'released_date' => $response['release_date'],
+            'artist' => $response['artists'][0]['name'],
+            'num_tracks' => $response['total_tracks'],
+        ];
+
+        $tracks = [];
+        foreach ($response['tracks']['items'] as $track) {
+            $tracks[] = [
+                'name' => $track['name'],
+                'id' => $track['id'],
+                'duration' => $track['duration_ms'],
+            ];
+        }
+
+        $album['duration'] = $this->millisecondsToText(array_sum(array_column($tracks, 'duration')));
+
+        foreach ($tracks as &$track) {
+            $track['duration'] = $this->millisecondsToMinSec($track['duration']);
+        }        
+
+        $album['tracks'] = $tracks;
+
+        dd($album);
+
+        return $album;
+    }
+
     public function getPlaylistArtists($playlist_id)
     {
         $response = Http::withHeaders([
