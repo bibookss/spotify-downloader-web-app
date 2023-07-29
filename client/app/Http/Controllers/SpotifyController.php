@@ -170,7 +170,8 @@ class SpotifyController extends Controller
             'id' => $response['id'],
             'description' => $response['description'],
             'owner' => $response['owner']['display_name'],
-            'num_tracks' => $response['tracks']['total'],
+            'owner_picture' => $this->getPlaylistOwnerPicture($response['owner']['id']),
+            'num_tracks' => $response['tracks']['total']
         ];
 
         $tracks = [];
@@ -195,6 +196,16 @@ class SpotifyController extends Controller
         $playlist['tracks'] = $tracks;
 
         return view('play-list-page', ['playListData' => $playlist]);
+    }
+
+    public function getPlaylistOwnerPicture($owner_id) {
+        $response = Http::withHeaders([
+            'Authorization' => 'Bearer ' . session('spotifyAccessToken'),
+        ])->get('https://api.spotify.com/v1/users/' . $owner_id);
+
+        $response = $response->json();
+
+        return $response['images'][0]['url'];
     }
 
     public function album(Request $request) {
