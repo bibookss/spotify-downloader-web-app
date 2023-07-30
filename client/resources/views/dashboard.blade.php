@@ -30,6 +30,8 @@
                 @endif
             </div>
         </div>
+
+        <x-footer />
     </body>
 @endsection
 
