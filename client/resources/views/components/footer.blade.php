@@ -1,11 +1,7 @@
 <footer class="bg-spotifyDarker dark:bg-gray-900 mt-10">
     <div class="w-full sm:px-9 px-4 lg:py-8">
         <div class="md:flex md:justify-between">
-            <div class="mb-6 md:mb-0">
-                <a href="https://flowbite.com/" class="flex items-center">
-                    <img src="{{ asset('assets/logo/spot-logo.png') }}" class="h-8 mr-3" alt="FlowBite Logo" />
-                </a>
-            </div>
+
             <div class="grid grid-cols-2 gap-8 sm:gap-6 sm:grid-cols-3 md:justify-between">
                 <div>
                     <h2 class="mb-6 text-sm font-semibold text-white uppercase dark:text-white">Resources</h2>
