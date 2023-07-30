@@ -12,7 +12,7 @@ module.exports = {
             colors: {
                 'spotifyGreen': '#1ED760',
                 'spotifyDark': '#181818',
-                'spotifyDarker': '#131313',
+                'spotifyDarker': '#121212',
                 'spotifyCard': '#312828',
                 'spotifyDescription': '#A2A2A2',
                 'spotifyHover': '#D0D0D0',

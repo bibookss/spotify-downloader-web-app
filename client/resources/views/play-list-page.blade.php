@@ -56,7 +56,7 @@
         <div class="sm:px-9 px-4">
             <table class="table w-full">
                 <thead>
-                    <tr class="border-b border-[#A2A2A2] sticky top-[70px] bg-[#121212]">
+                    <tr class="border-b border-[#A2A2A2] sticky top-[85px] bg-[#121212]">
                         <th style="width: 4%" class="text-center font-normal py-4">#</th>
                         <th style="width: 36%" class="text-left font-normal py-4">Title</th>
                         <th style="width: 35%" class="text-left font-normal md:table-cell hidden py-4">Album</th>
@@ -104,6 +104,8 @@
                 </tbody>
             </table>
         </div>
+
+        <x-footer />
     </body>
 @endsection
 
