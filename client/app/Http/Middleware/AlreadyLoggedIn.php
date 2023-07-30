@@ -16,7 +16,7 @@ class AlreadyLoggedIn
     public function handle(Request $request, Closure $next): Response
     {
         if (session()->has('spotifyUser') && (url('/') == $request->url())) {
-            return back();
+            return redirect('/');
         }
         return $next($request);
     }
