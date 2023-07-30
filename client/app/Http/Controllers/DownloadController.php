@@ -7,10 +7,12 @@ use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Response;
 use Symfony\Component\HttpFoundation\StreamedResponse;
 use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Facades\Config;
 
 
 class DownloadController extends Controller
 {
+
     /**
      * Download a song from the backend service
      *
@@ -30,7 +32,7 @@ class DownloadController extends Controller
             'artist' => $request->input('artist'),
         ];
 
-        $response = Http::post('http://localhost:8001/song/download', $data);
+        $response = Http::post(Config::get('app.fastapi_url') . '/song/download', $data);
 
         $fileContent = $response->body();
 
@@ -73,7 +75,7 @@ class DownloadController extends Controller
             ];
         }
 
-        $response = Http::post('http://localhost:8001/playlist/download/server', $tracks)->json();
+        $response = Http::post(Config::get('app.fastapi_url') . '/playlist/download/server', $tracks)->json();
         // Store the download id in the session
         $downloadId = $response['download_id'];
         session(['downloadId' => $downloadId]);
@@ -89,7 +91,7 @@ class DownloadController extends Controller
     public function checkPlaylistDownloadStatus()
     {
         $downloadId = session('downloadId');
-        $response = Http::get('http://localhost:8001/playlist/download/status/' . $downloadId)->json();
+        $response = Http::get(Config::get('app.fastapi_url') . '/playlist/download/status/' . $downloadId)->json();
 
         if ($response['status'] === 'failed') {
             return response()->json(['error' => 'Download failed'], 500);
@@ -107,7 +109,7 @@ class DownloadController extends Controller
     {
         ini_set('memory_limit', '512M'); // Set a higher memory limit, adjust as needed
         $downloadId = session('downloadId');
-        $url = 'http://localhost:8001/playlist/download/client';
+        $url = Config::get('app.fastapi_url') . '/playlist/download/client';
         try {
             $response = Http::withOptions([
                 'stream' => true,
@@ -128,9 +130,6 @@ class DownloadController extends Controller
         } catch (Exception $e) {
             return response()->json(['error' => 'An error occurred during the download'], 500);
         }  
-        // finally {
-        //     Session::forget('downloadId');
-        // }
     }
 }
 
