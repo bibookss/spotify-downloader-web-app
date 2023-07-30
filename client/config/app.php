@@ -185,4 +185,8 @@ return [
         // 'Example' => App\Facades\Example::class,
     ])->toArray(),
 
+    // FastAPI URL
+    'fastapi_url' => env('DOCKER_ENV', false)
+        ? env('FASTAPI_DOCKER_URL')
+        : env('FASTAPI_LOCAL_URL'),
 ];
