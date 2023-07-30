@@ -9,7 +9,16 @@ A Laravel web app to download songs from your favorite Spotify artists, albums, 
 
 ## Usage
 Copy the .env.sample to .env and plug in the Spotify ID and secret
+
+Install frontend dependencies
 ```
+cd /client
+npm install
+npm run dev
+```
+
+```
+cd /spotify-downloader-web-app
 docker compose build && docker compose up -d
 ```
 
