@@ -8,6 +8,7 @@ A Laravel web app to download songs from your favorite Spotify artists, albums, 
 - [ ] View popular playlists from Spotify
 
 ## Usage
+Copy the .env.sample to .env and plug in the Spotify ID and secret
 ```
 docker compose build && docker compose up -d
 ```
