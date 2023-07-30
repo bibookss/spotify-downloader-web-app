@@ -16,6 +16,8 @@ cd /client
 npm install
 npm run dev
 ```
+
+```
 cd /spotify-downloader-web-app
 docker compose build && docker compose up -d
 ```
