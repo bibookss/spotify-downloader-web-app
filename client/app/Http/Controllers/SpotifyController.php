@@ -73,6 +73,10 @@ class SpotifyController extends Controller
         $featuredPlaylist = $this->featuredPlaylist();
         $request->session()->put('spotifyFeaturedPlaylists', $featuredPlaylist);
 
+        // Get Categories
+        $categories = $this->categories();
+        $request->session()->put('spotifyCategories', $categories);
+
         // Get Artists for each playlists
         foreach ($playlists as $key => $playlist) {
             $artists = $this->getPlaylistArtists($playlist['id']);
