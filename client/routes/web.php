@@ -17,7 +17,6 @@ use App\Http\Controllers\DownloadController;
 */
 
 
-
 Route::get('/', function () {
     return view('authentication.auth');
 })->middleware('alreadyLoggedIn');
@@ -28,18 +27,30 @@ Route::get('/dashboard', function () {
 
 
 // Spotify
-Route::get('/spotify/login', [SpotifyController::class, 'login'])->name('spotify.login');
-Route::post('/spotify/logout', [SpotifyController::class, 'logout'])->name('spotify.logout');
-Route::get('/spotify/callback', [SpotifyController::class, 'callback'])->name('spotify.callback');
-Route::get('/spotify/user', [SpotifyController::class, 'user'])->name('spotify.user');
-Route::get('/playlists', [SpotifyController::class, 'playlists'])->name('spotify.playlists');
-Route::get('/playlists/{id}', [SpotifyController::class, 'playlist'])->name('spotify.playlist');
-Route::get('/spotify/categories', [SpotifyController::class, 'categories'])->name('spotify.categories');
-Route::get('/spotify/playlist/search', [SpotifyController::class, 'search'])->name('spotify.search');
-Route::get('/albums/{id}', [SpotifyController::class, 'album'])->name('spotify.album');
+Route::controller(SpotifyController::class)->group(function () {
+    Route::prefix('spotify')->group(function () {
+        Route::get('/login', 'login')->name('spotify.login');
+        Route::post('/logout', 'logout')->name('spotify.logout');
+        Route::get('/callback', 'callback')->name('spotify.callback');
+
+        Route::group(['middleware' => ['isLoggedIn', 'token.refresh']], function () {
+            Route::get('/user', 'user')->name('spotify.user');
+            Route::get('/playlists', 'playlists')->name('spotify.playlists');
+            Route::get('/playlists/{id}', 'playlist')->name('spotify.playlist');
+            Route::get('/categories', 'categories')->name('spotify.categories');
+            Route::get('/playlist/search', 'search')->name('spotify.search');
+            Route::get('/albums/{id}', 'album')->name('spotify.album');
+        });
+    });
+});
 
 // Download
-Route::post('/download/song', [DownloadController::class, 'download'])->name('download.song');
-Route::post('/download/playlist', [DownloadController::class, 'initiatePlaylistDownload'])->name('download.playlist.server');
-Route::get('/download/playlist', [DownloadController::class, 'downloadPlaylist'])->name('download.playlist.client');
-Route::get('/download/playlist/progress', [DownloadController::class, 'checkPlaylistDownloadStatus'])->name('download.playlist.progress');
+Route::controller(DownloadController::class)->group(function () {
+    Route::prefix('download')->group(function () {
+        Route::post('/song', 'download')->name('download.song');
+        Route::post('/playlist', 'initiatePlaylistDownload')->name('download.playlist.server');
+        Route::get('/playlist', 'downloadPlaylist')->name('download.playlist.client');
+        Route::get('/playlist/progress', 'checkPlaylistDownloadStatus')->name('download.playlist.progress');
+    });
+});
+
