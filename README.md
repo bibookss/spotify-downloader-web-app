@@ -54,3 +54,12 @@ docker compose build && docker compose up -d
         - Commit Hash (Optional):
             - Create a branch of [layer]/[description] from a previous commit using the [commit-hash].
 ---
+
+# Application Sample Screenshots
+| Landing Page View |
+|:--------------:|
+| ![Application Image](client/public/assets/img/landing-view.png) | 
+| Dashboard Page View |
+| ![Application Image](client/public/assets/img/dashboard-view.png) | 
+| Playlist Page View |
+| ![Application Image](client/public/assets/img/playlist-view.png) | 
