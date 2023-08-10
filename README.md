@@ -2,10 +2,10 @@
 A Laravel web app to download songs from your favorite Spotify artists, albums, and playlists using a Python backend service.
 
 ## Features
-- [ ] Download songs from playlists, albums, or artists. 
-- [ ] Download whole playlists, albums, or artist's songs in one click.
-- [ ] Search for songs, albums, and playlists
-- [ ] View popular playlists from Spotify
+- [x] Download songs from playlists, albums, or artists. 
+- [x] Download whole playlists, albums, or artist's songs in one click.
+- [x] Search for songs, albums, and playlists
+- [x] View popular playlists from Spotify
 
 ## Usage
 Copy the .env.sample to .env and plug in the Spotify ID and secret
